@@ -1,0 +1,17 @@
+{
+  "name": "MEAN",
+  "version": "1.0.0",
+  "description": "An API to store Festival and club shows",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3",
+    "mongodb": "^2.1.6",
+    "express-session": "^1.5.0",
+    "mongoose": "^4.5.7"
+  }
+}

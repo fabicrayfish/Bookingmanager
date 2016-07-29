@@ -1,0 +1,29 @@
+<html ng-app="BookingManager">
+<head>
+  <meta charset="utf8" />
+  <title>AngularJS Tutorial</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="assets/css/custom.css">
+</head>
+<body>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular-resource.min.js"></script>
+
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPBvTykMFvht4y8UyYuCzn1O27fXEMPi8&libraries=places"></script>
+  <div class="navbar-black">
+    <ul>
+      <li><a href="#/">Home</a></li>
+      <li><a href="#/list">List</a></li>
+    </ul>
+  </div>
+  <div id="main">
+    <div ng-view></div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="pages/festival/festival.js"></script>
+  <script src="pages/list/list.js"></script>
+</body>
+</html>

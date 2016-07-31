@@ -5,6 +5,9 @@ var mongodb = require("mongodb");
 var mongoose = require("mongoose");
 var ObjectID = mongodb.ObjectID;
 
+var jwt = require("jsonwebtoken");
+var config = require("./config.js");
+var User = require("./app/models/user.js");
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
@@ -13,8 +16,12 @@ app.use(bodyParser.json());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:8080");
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, x-access-token");
   next();
+});
+
+app.options('*', function(req, res) {
+    res.send(200);
 });
 
 
@@ -22,17 +29,6 @@ var db = mongoose.connection;
 // Website you wish to allow to connect
 
 db.on('error', console.error);
-
-  // This is the generic schema for an article
-var placesSchema = mongoose.Schema({
-  route: String,
-  street_number: String,
-  locality: String,
-  postal_code: String,
-  country: String
-});
-
-var Place = mongoose.model('Place', placesSchema);
 
 var mongodbURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/';
 
@@ -49,67 +45,68 @@ var server = app.listen(process.env.PORT || 5000, function() {
 
 function handleError(res, reason, message, code) {
   console.log("Error: " + reason);
-  res.status(code || 500).json({"error" : message});
+  res.sendStatus(code || 500).json({"error" : message});
 }
 
-app.get("/places", function(req, res){
+// User Authentication
 
-  Place.find({}, function(err, docs){
-    if (err) {
-      handleError(res, err.message, "Failed to get contact.");
-    } else {
-      res.status(200).json(docs);
-    }
-  });
-});
-
-app.get("/places/:id", function(req, res){
-  var id = req.params.id;
-  Place.findById(id, function(err, docs){
-    if (err) {
-      handleError(res, err.message, "Failed to get contact.");
-    } else {
-      res.status(200).json(docs);
-    }
-  });
-});
-
-app.post("/places", function(req, res) {
-  var newPlace = req.body;
-
-  var place = new Place(newPlace);
-
-  place.save(function(err, place){
-    if (err) {
-      handleError(res, err.message, err);
-    } else {
-      res.status(200).json(place);
-    }
-  });
-
-
-});
-
-app.put("/places/:id", function(req,res) {
-  var id = req.params.id;
-  var updatedPlace = req.body;
-
-  Place.findById(id, function(err, place){
-    if (err) {
+app.post('/authenticate', function(req, res){
+  User.findOne({
+    name: req.body.name
+  }, function(err, user){
+    if (err){
       handleError(res, err.message, err);
     }
 
-    place.route = updatedPlace.route;
-    place.street_number = updatedPlace.street_number;
-    place.locality = updatedPlace.locality;
-    place.postal_code = updatedPlace.postal_code;
-    place.country = updatedPlace.country;
+    if(!user){
+      res.json({success: false, message: "Authentication failed, no user with this name available"});
+    }
 
-    place.save(function(err){
-      if (err) {
-        handleError(res, err.message, err);
+    if(user.password != req.body.password){
+      res.json({success: false, message: "Authentication failed, password is incorrect."});
+    } else {
+
+      // Create Json Web Token
+
+      var userData = {'name' : user.name, 'admin': user.admin};
+
+      var token = jwt.sign(userData, config.jwtsecret, {
+        expiresIn: "1 day"  // 24 hours
+      });
+
+      res.json({
+        success: true,
+        message: "Authentication succesfull",
+        token: token
+      });
+    }
+
+  });
+
+});
+
+// Router to verify user identity
+
+app.use(function(req, res, next){
+
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+  // decode the token
+
+  if (token) {
+
+    jwt.verify(token, config.jwtsecret, function(err, decoded) {
+      if(err) {
+        handleError(res, err.message, err, 403);
+      } else {
+        req.decoded = decoded;
+        next();
       }
-      res.status(200).json(place);
     });
-  });
+  } else {
+    handleError(res, "no token provided", "You have not provided a token, please add a Bearer Token", 403)
+  }
+
 });
+
+require("./app/endpoints/festivals.js")(app);

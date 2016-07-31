@@ -8,6 +8,12 @@ div#map_canvas {
 .m-y-30 {
   margin: 30px 0 30px 0; }
 
+.m-b-20 {
+  margin: 0 0 20px 0; }
+
+.m-b-30 {
+  margin: 0 0 30px 0; }
+
 .navbar-black ul {
   list-style-type: none;
   margin: 0 0 30px 0;

@@ -3,16 +3,25 @@ angular.module('list', ['ngRoute'])
 .config(function($routeProvider) {
   $routeProvider.when('/list', {
       templateUrl : 'pages/list/search.html',
-      controller : 'PizzaCtrl'
+      controller : 'FestivalListCtrl'
     });
 })
 
-.controller('PizzaCtrl', function($scope){
-  $scope.articles = [
-      {id:1, name: "Pizza Americana", price: 100},
-      {id:2, name: "Pizza Tonno", price: 50},
-      {id:3, name: "Pizza Arschloch", price:150}
-  ];
+.controller('FestivalListCtrl', function($scope, festivalEntry, AlertService, $timeout){
+
+  if (AlertService.hasAlert()) {
+    $scope.alertMessage = AlertService.getSuccess();
+    $timeout(function () {$scope.alertMessage = "";}, 3000);
+    AlertService.reset();
+  }
+
+  $scope.festivals = festivalEntry.query();
+
+  $scope.redirect = function(festival) {
+    var location = "/bookingmanager/#/festival/" + festival._id;
+    window.location = location;
+  };
+
 });
 
 

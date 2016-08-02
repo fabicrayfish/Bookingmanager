@@ -1,4 +1,4 @@
-var app = angular.module('BookingManager', ['ngRoute', 'ngResource', 'ngStorage', 'BookingManager.services', 'festival', 'list', 'login']);
+var app = angular.module('BookingManager', ['ngRoute', 'ngResource', 'ngStorage', 'xeditable', 'BookingManager.services', 'festival', 'list', 'login']);
 
 app.config(function($locationProvider, $routeProvider, $httpProvider) {
   $httpProvider.interceptors.push('authenticationInterceptor');
@@ -68,6 +68,10 @@ angular.module('BookingManager.services', [])
         method: 'POST'
       }
     });
+  });
+
+  app.run(function(editableOptions) {
+    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
   });
 
 

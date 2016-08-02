@@ -46,6 +46,17 @@
         </div>
       </div>
     </div>
+    <h2>Zeitraum</h2>
+    <table class="table">
+      <tr>
+        <th>Datum</th>
+        <th>Bewerbungsfrist</th>
+        <th>Status</th>
+      </tr>
+      <tr>
+         <td><a href="#" editable-date="user.name" e-single>{{ user.name || "username" }}</a></td>
+      </tr>
+    <table>
     <h2>Ort</h2>
     <div class="row">
       <div class="col-sm-8 col-sm-offset-2">
@@ -88,10 +99,7 @@
     </div>
     <div id="map_canvas"></div>
     <div class="col-sm-12 text-center m-y-30">
-        <input type="submit" class="btn btn-primary btn-lg" id="submit" value="Submit" />
+        <input type="submit" class="btn btn-primary btn-lg" id="submit" value="Save" />
     </div>
   </form>
-
-
-
 </div>

@@ -15,7 +15,7 @@ angular.module('login', ['ngRoute'])
               $scope.login.$save(function(res){
                 if (res.success == true) {
                   $localStorage.token = res.token;
-                  window.location = "/bookingmanager/#/list";
+                  window.location = "/#/list";
                 } else {
                   console.log(res.message);
                 }
@@ -26,5 +26,3 @@ angular.module('login', ['ngRoute'])
 
 
 });
-
-

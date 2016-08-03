@@ -17,7 +17,7 @@ app.factory('authenticationInterceptor', function($q, $location, $localStorage){
     'responseError': function(response) {
       console.log("responseError");
       if(response.status == 401 || response.status == 403) {
-        window.location = "/bookingmanager/#/login";
+        window.location = "/#/login";
       }
       return $q.reject(response);
     }
@@ -56,14 +56,14 @@ app.factory('AlertService', function () {
 
 angular.module('BookingManager.services', [])
   .factory('festivalEntry', function($resource) {
-    return $resource('http://localhost:5000/festivals/:id', { id: '@_id' }, {
+    return $resource('/api/festivals/:id', { id: '@_id' }, {
       update: {
         method: 'PUT' // this method issues a PUT request
       }
     });
   })
   .factory('login', function($resource){
-    return $resource('http://localhost:5000/authenticate',{}, {
+    return $resource('/api/authenticate',{}, {
       check: {
         method: 'POST'
       }

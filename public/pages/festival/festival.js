@@ -135,10 +135,8 @@ angular.module('festival', ['ngRoute'])
         });
       }
       AlertService.setSuccess({msg: $scope.festivalEntry._id + ' has been updated successfully.'})
-      window.location = "/bookingmanager/#/list"
+      window.location = "/#/list"
     }
 
 
 });
-
-

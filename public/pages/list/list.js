@@ -18,7 +18,7 @@ angular.module('list', ['ngRoute'])
   $scope.festivals = festivalEntry.query();
 
   $scope.redirect = function(festival) {
-    var location = "/bookingmanager/#/festival/" + festival._id;
+    var location = "/#/festival/" + festival._id;
     window.location = location;
   };
 

@@ -2,174 +2,130 @@
 "CodeKitInfo": "This is a CodeKit 2.x project configuration file. It is designed to sync project settings across multiple machines. MODIFYING THE CONTENTS OF THIS FILE IS A POOR LIFE DECISION. If you do so, you will likely cause CodeKit to crash. This file is not useful unless accompanied by the project that created it in CodeKit 2. This file is not backwards-compatible with CodeKit 1.x. For more information, see: http:\/\/incident57.com\/codekit",
 "creatorBuild": "19127",
 "files": {
-	"\/api\/app\/endpoints\/festivals.js": {
+	"\/app\/endpoints\/festivals.js": {
 		"fileType": 64,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/api\/app\/endpoints\/festivals.js",
-		"outputAbbreviatedPath": "\/api\/app\/endpoints\/min\/festivals-min.js",
+		"inputAbbreviatedPath": "\/app\/endpoints\/festivals.js",
+		"outputAbbreviatedPath": "\/min\/festivals-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
+		"outputStyle": 1,
 		"syntaxCheckerStyle": 0
 		},
-	"\/api\/app\/endpoints\/min\/festivals-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/api\/app\/endpoints\/min\/festivals-min.js",
-		"outputAbbreviatedPath": "\/api\/app\/endpoints\/min\/min\/festivals-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 0
-		},
-	"\/api\/app\/endpoints\/min\/places-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/api\/app\/endpoints\/min\/places-min.js",
-		"outputAbbreviatedPath": "\/api\/app\/endpoints\/min\/min\/places-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 0
-		},
-	"\/api\/app\/models\/min\/user-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/api\/app\/models\/min\/user-min.js",
-		"outputAbbreviatedPath": "\/api\/app\/models\/min\/min\/user-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 0
-		},
-	"\/api\/app\/models\/user.js": {
+	"\/app\/models\/user.js": {
 		"fileType": 64,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/api\/app\/models\/user.js",
-		"outputAbbreviatedPath": "\/api\/app\/models\/min\/user-min.js",
+		"inputAbbreviatedPath": "\/app\/models\/user.js",
+		"outputAbbreviatedPath": "\/min\/user-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
+		"outputStyle": 1,
 		"syntaxCheckerStyle": 0
 		},
-	"\/api\/config.js": {
+	"\/config.js": {
 		"fileType": 64,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/api\/config.js",
-		"outputAbbreviatedPath": "\/api\/min\/config-min.js",
+		"inputAbbreviatedPath": "\/config.js",
+		"outputAbbreviatedPath": "\/min\/config-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
+		"outputStyle": 1,
 		"syntaxCheckerStyle": 0
 		},
-	"\/api\/min\/server-min.js": {
+	"\/min\/festivals-min.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/api\/min\/server-min.js",
-		"outputAbbreviatedPath": "\/api\/min\/min\/server-min-min.js",
+		"inputAbbreviatedPath": "\/min\/festivals-min.js",
+		"outputAbbreviatedPath": "\/min\/festivals-min-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
+		"outputStyle": 1,
 		"syntaxCheckerStyle": 0
 		},
-	"\/api\/min\/user-min.js": {
+	"\/min\/login-min.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/api\/min\/user-min.js",
-		"outputAbbreviatedPath": "\/api\/min\/min\/user-min-min.js",
+		"inputAbbreviatedPath": "\/min\/login-min.js",
+		"outputAbbreviatedPath": "\/min\/login-min-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
+		"outputStyle": 1,
 		"syntaxCheckerStyle": 0
 		},
-	"\/api\/package.json": {
+	"\/package.json": {
 		"fileType": 524288,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/api\/package.json",
+		"inputAbbreviatedPath": "\/package.json",
 		"orderOutput": 0,
-		"outputAbbreviatedPath": "\/api\/package-min.json",
+		"outputAbbreviatedPath": "\/package-min.json",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1
 		},
-	"\/api\/server.js": {
+	"\/public\/app.js": {
 		"fileType": 64,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/api\/server.js",
-		"outputAbbreviatedPath": "\/api\/min\/server-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 0
-		},
-	"\/app.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/app.js",
+		"inputAbbreviatedPath": "\/public\/app.js",
 		"outputAbbreviatedPath": "\/min\/app-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
+		"outputStyle": 1,
 		"syntaxCheckerStyle": 0
 		},
-	"\/assets\/css\/custom.css": {
+	"\/public\/assets\/css\/custom.css": {
 		"fileType": 16,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/assets\/css\/custom.css",
+		"inputAbbreviatedPath": "\/public\/assets\/css\/custom.css",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/assets\/css\/font-awesome.min.css": {
+	"\/public\/assets\/css\/font-awesome.min.css": {
 		"fileType": 16,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/assets\/css\/font-awesome.min.css",
+		"inputAbbreviatedPath": "\/public\/assets\/css\/font-awesome.min.css",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/assets\/css\/xeditable.min.css": {
+	"\/public\/assets\/css\/xeditable.min.css": {
 		"fileType": 16,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/assets\/css\/xeditable.min.css",
+		"inputAbbreviatedPath": "\/public\/assets\/css\/xeditable.min.css",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/assets\/js\/xeditable.min.js": {
+	"\/public\/assets\/js\/xeditable.min.js": {
 		"fileType": 64,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/assets\/js\/xeditable.min.js",
-		"outputAbbreviatedPath": "\/assets\/js\/min\/xeditable.min-min.js",
+		"inputAbbreviatedPath": "\/public\/assets\/js\/xeditable.min.js",
+		"outputAbbreviatedPath": "\/min\/xeditable.min-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
+		"outputStyle": 1,
 		"syntaxCheckerStyle": 0
 		},
-	"\/assets\/sass\/custom.scss": {
+	"\/public\/assets\/sass\/custom.scss": {
 		"createSourceMap": 0,
 		"debugStyle": 0,
 		"decimalPrecision": 10,
 		"fileType": 4,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/assets\/sass\/custom.scss",
-		"outputAbbreviatedPath": "\/assets\/css\/custom.css",
+		"inputAbbreviatedPath": "\/public\/assets\/sass\/custom.scss",
+		"outputAbbreviatedPath": "\/public\/assets\/css\/custom.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -177,117 +133,84 @@
 		"shouldRunBless": 0,
 		"useLibsass": 0
 		},
-	"\/index.html": {
+	"\/public\/index.html": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/index.html",
+		"inputAbbreviatedPath": "\/public\/index.html",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/min\/app-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/min\/app-min.js",
-		"outputAbbreviatedPath": "\/min\/min\/app-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 0
-		},
-	"\/pages\/festival\/festival.html": {
+	"\/public\/pages\/festival\/festival.html": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/pages\/festival\/festival.html",
+		"inputAbbreviatedPath": "\/public\/pages\/festival\/festival.html",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/pages\/festival\/festival.js": {
+	"\/public\/pages\/festival\/festival.js": {
 		"fileType": 64,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/pages\/festival\/festival.js",
-		"outputAbbreviatedPath": "\/pages\/festival\/min\/festival-min.js",
+		"inputAbbreviatedPath": "\/public\/pages\/festival\/festival.js",
+		"outputAbbreviatedPath": "\/min\/festival-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
+		"outputStyle": 1,
 		"syntaxCheckerStyle": 0
 		},
-	"\/pages\/festival\/min\/festival-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/pages\/festival\/min\/festival-min.js",
-		"outputAbbreviatedPath": "\/pages\/festival\/min\/min\/festival-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 0
-		},
-	"\/pages\/list\/list.js": {
+	"\/public\/pages\/list\/list.js": {
 		"fileType": 64,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/pages\/list\/list.js",
-		"outputAbbreviatedPath": "\/pages\/list\/min\/list-min.js",
+		"inputAbbreviatedPath": "\/public\/pages\/list\/list.js",
+		"outputAbbreviatedPath": "\/min\/list-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
+		"outputStyle": 1,
 		"syntaxCheckerStyle": 0
 		},
-	"\/pages\/list\/min\/list-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/pages\/list\/min\/list-min.js",
-		"outputAbbreviatedPath": "\/pages\/list\/min\/min\/list-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 0
-		},
-	"\/pages\/list\/search.html": {
+	"\/public\/pages\/list\/search.html": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/pages\/list\/search.html",
+		"inputAbbreviatedPath": "\/public\/pages\/list\/search.html",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/pages\/login\/login.html": {
+	"\/public\/pages\/login\/login.html": {
 		"fileType": 8192,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/pages\/login\/login.html",
+		"inputAbbreviatedPath": "\/public\/pages\/login\/login.html",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
-	"\/pages\/login\/login.js": {
+	"\/public\/pages\/login\/login.js": {
 		"fileType": 64,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/pages\/login\/login.js",
-		"outputAbbreviatedPath": "\/pages\/login\/min\/login-min.js",
+		"inputAbbreviatedPath": "\/public\/pages\/login\/login.js",
+		"outputAbbreviatedPath": "\/min\/login-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
+		"outputStyle": 1,
 		"syntaxCheckerStyle": 0
 		},
-	"\/pages\/login\/min\/login-min.js": {
+	"\/server.js": {
 		"fileType": 64,
-		"ignore": 1,
+		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/pages\/login\/min\/login-min.js",
-		"outputAbbreviatedPath": "\/pages\/login\/min\/min\/login-min-min.js",
+		"inputAbbreviatedPath": "\/server.js",
+		"outputAbbreviatedPath": "\/min\/server-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
+		"outputStyle": 1,
 		"syntaxCheckerStyle": 0
 		}
 	},
@@ -299,7 +222,7 @@
 "projectAttributes": {
 	"bowerAbbreviatedPath": "",
 	"displayValue": "AngularTest2",
-	"displayValueWasSetByUser": 0,
+	"displayValueWasSetByUser": 1,
 	"iconImageName": "globe_gray"
 	},
 "projectSettings": {
@@ -481,14 +404,14 @@
 	"jadeAutoOutputPathStyle": 0,
 	"jadeCompileDebug": 1,
 	"jadeOutputStyle": 0,
-	"javascriptAutoOutputPathEnabled": 1,
+	"javascriptAutoOutputPathEnabled": 0,
 	"javascriptAutoOutputPathFilenamePattern": "*-min.js",
 	"javascriptAutoOutputPathRelativePath": "\/min",
 	"javascriptAutoOutputPathReplace1": "",
 	"javascriptAutoOutputPathReplace2": "",
-	"javascriptAutoOutputPathStyle": 2,
+	"javascriptAutoOutputPathStyle": 1,
 	"javascriptCreateSourceMap": 1,
-	"javascriptOutputStyle": 0,
+	"javascriptOutputStyle": 1,
 	"javascriptSyntaxCheckerStyle": 0,
 	"jsCheckerReservedNamesString": "",
 	"jsHintFlags2": {
@@ -900,7 +823,7 @@
 	"sassUseLibsass": 0,
 	"shouldRunAutoprefixer": 0,
 	"shouldRunBless": 0,
-	"skippedItemsString": ".svn, .git, .hg, log, _logs, _cache, cache, logs, node_modules",
+	"skippedItemsString": ".svn, .git, .hg, log, _logs, _cache, cache, logs, node_modules, .js",
 	"slimAutoOutputPathEnabled": 1,
 	"slimAutoOutputPathFilenamePattern": "*.html",
 	"slimAutoOutputPathRelativePath": "",

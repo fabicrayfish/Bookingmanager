@@ -50,7 +50,7 @@ function handleError(res, reason, message, code) {
 
 // User Authentication
 
-app.post('/authenticate', function(req, res){
+app.post('/api/authenticate', function(req, res){
   User.findOne({
     name: req.body.name
   }, function(err, user){
@@ -83,6 +83,12 @@ app.post('/authenticate', function(req, res){
 
   });
 
+});
+
+// Angular Routes
+
+app.get('*', function(req, res) {
+    res.sendfile('./public/index.html'); // load our public/index.html file
 });
 
 // Router to verify user identity

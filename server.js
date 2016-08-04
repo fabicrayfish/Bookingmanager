@@ -45,7 +45,7 @@ var server = app.listen(process.env.PORT || 5000, function() {
 
 function handleError(res, reason, message, code) {
   console.log("Error: " + reason);
-  res.sendStatus(code || 500).json({"error" : message});
+  res.status(code || 500).json({"error" : message});
 }
 
 // User Authentication
@@ -98,7 +98,7 @@ function checkToken(req, res, next){
 
     jwt.verify(token, config.jwtsecret, function(err, decoded) {
       if(err) {
-        handleError(res, err.message, err, 403);
+        handleError(res, err.message, "Your token is not valid.", 403);
       } else {
         req.decoded = decoded;
         next();

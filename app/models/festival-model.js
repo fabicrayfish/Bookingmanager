@@ -18,5 +18,11 @@ module.exports = mongoose.model('Festival', new Schema({
     distance: String,
     lat: Number,
     lng: Number
-  }
+  },
+  dates: [{
+    date: Date,
+    deadline: Date,
+    contactType: String,
+    status: String
+  }]
 }));

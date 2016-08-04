@@ -27,6 +27,18 @@ angular.module('festival', ['ngRoute'])
       $scope.festivalEntry = new festivalEntry;
     }
 
+    $scope.contactTypes = [
+      {text: 'email'},
+      {text: 'homepage'},
+      {text: 'facebook'}
+    ];
+
+    $scope.statusTypes = [
+      {text: 'not sent'},
+      {text: 'sent'}
+    ];
+
+
     var directionsService = new google.maps.DirectionsService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
     var latlng = new google.maps.LatLng(49.994704, 8.669842);
@@ -119,6 +131,12 @@ angular.module('festival', ['ngRoute'])
       $scope.festivalEntry.address.distance = distance;
 
       $scope.$apply();
+    }
+
+    $scope.addRow = function() {
+      $scope.festivalEntry.dates.push({"date" : 1470345333,
+            "deadline" : 1470345333,
+            "contactType" : "email"});
     }
 
 

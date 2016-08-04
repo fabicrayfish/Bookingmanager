@@ -3,6 +3,12 @@ var router = require('express').Router();
 
 var Festival = require('../models/festival-model.js')
 
+// Contacts API Routes
+
+function handleError(res, reason, message, code) {
+  console.log("Error: " + reason);
+  res.status(code || 500).json({"error" : message});
+}
 
 
 
@@ -67,6 +73,8 @@ var Festival = require('../models/festival-model.js')
       festival.address.distance = updatedFestival.address.distance;
       festival.address.lat = updatedFestival.address.lat;
       festival.address.lng = updatedFestival.address.lng;
+      festival.dates = updatedFestival.dates;
+
 
       festival.save(function(err){
         if (err) {

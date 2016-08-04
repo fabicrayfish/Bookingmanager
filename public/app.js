@@ -56,14 +56,14 @@ app.factory('AlertService', function () {
 
 angular.module('BookingManager.services', [])
   .factory('festivalEntry', function($resource) {
-    return $resource('/api/festivals/:id', { id: '@_id' }, {
+    return $resource('./api/festivals/:id', { id: '@_id' }, {
       update: {
         method: 'PUT' // this method issues a PUT request
       }
     });
   })
   .factory('login', function($resource){
-    return $resource('/api/authenticate',{}, {
+    return $resource('./api/authenticate',{}, {
       check: {
         method: 'POST'
       }

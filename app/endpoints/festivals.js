@@ -1,30 +1,12 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var router = require('express').Router();
 
-module.exports = function(app) {
-
-  // This is the generic schema for an article
-  var Festival = mongoose.model('Festival', new Schema({
-    festivalName: String,
-    name: String,
-    surname: String,
-    facebookUrl: String,
-    homepageUrl: String,
-    email: String,
-    address: {
-      route: String,
-      street_number: String,
-      locality: String,
-      postal_code: String,
-      country: String,
-      distance: String,
-      lat: Number,
-      lng: Number
-    }
-  }));
+var Festival = require('../models/festival-model.js')
 
 
-  app.get("/festivals", function(req, res){
+
+
+  router.get('/festivals', function(req, res){
 
     Festival.find({}, function(err, docs){
       if (err) {
@@ -36,7 +18,7 @@ module.exports = function(app) {
   });
 
 
-  app.get("/festivals/:id", function(req, res){
+  router.get('/festivals/:id', function(req, res){
     var id = req.params.id;
     Festival.findById(id, function(err, docs){
       if (err) {
@@ -47,7 +29,7 @@ module.exports = function(app) {
     });
   });
 
-  app.post("/festivals", function(req, res) {
+  router.post('/festivals', function(req, res) {
     var newFestival = req.body;
 
     var festival = new Festival(newFestival);
@@ -63,7 +45,7 @@ module.exports = function(app) {
 
   });
 
-  app.put("/festivals/:id", function(req,res) {
+  router.put('/festivals/:id', function(req,res) {
     var id = req.params.id;
     var updatedFestival = req.body;
 
@@ -95,4 +77,4 @@ module.exports = function(app) {
     });
   });
 
-};
+module.exports = router;

@@ -85,15 +85,10 @@ app.post('/api/authenticate', function(req, res){
 
 });
 
-// Angular Routes
-
-app.get('*', function(req, res) {
-    res.sendfile('./public/index.html'); // load our public/index.html file
-});
-
 // Router to verify user identity
 
-app.use(function(req, res, next){
+function checkToken(req, res, next){
+
 
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
@@ -113,6 +108,15 @@ app.use(function(req, res, next){
     handleError(res, "no token provided", "You have not provided a token, please add a Bearer Token", 403)
   }
 
-});
+};
 
-require("./app/endpoints/festivals.js")(app);
+
+var festivals = require("./app/endpoints/festivals.js");
+
+app.use('/api', checkToken, festivals);
+
+// Angular Routes
+
+app.get('*', function(req, res) {
+    res.sendfile('./public/index.html'); // load our public/index.html file
+});

@@ -4,10 +4,15 @@ var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
 var mongoose = require("mongoose");
 var ObjectID = mongodb.ObjectID;
+var nodemailer = require("nodemailer");
+var schedule = require('node-schedule');
 
 var jwt = require("jsonwebtoken");
 var config = require("./config.js");
 var User = require("./app/models/user.js");
+
+// Transporter object for E-mail (Cronjob)
+var transporter = nodemailer.createTransport('smtps://admin%40alaskapirate.de:crayfish2013@smtp.strato.de');
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
@@ -47,6 +52,36 @@ function handleError(res, reason, message, code) {
   console.log("Error: " + reason);
   res.status(code || 500).json({"error" : message});
 }
+
+// Testmail
+
+app.get('/api/testmail', function(req, res){
+  var j = schedule.scheduleJob('20 * * * * *', function(){
+    console.log("will sent email");
+    // setup e-mail data with unicode symbols
+    var mailOptions = {
+        from: '"Test 👥" <test@alaskapirate.de>', // sender address
+        to: 'fabi.fink@gmail.com', // list of receivers
+        subject: 'Hello ✔', // Subject line
+        text: 'Hello world 🐴' // plaintext body
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function(err, info){
+        if(err){
+            console.log(err);
+        }
+
+        console.log(info);
+    });
+  });
+
+  res.json({
+    success: true,
+    message: 'Cronjob scheduled'
+  });
+
+});
 
 // User Authentication
 

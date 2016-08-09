@@ -18,9 +18,11 @@ angular.module('festival', ['ngRoute'])
       var id = $routeParams.id;
 
       $scope.festivalEntry = festivalEntry.get({ id: id }, function(){
-        if ($scope.festivalEntry.address.lat && $scope.festivalEntry.address.lng) {
-          var endlatlng = new google.maps.LatLng($scope.festivalEntry.address.lat, $scope.festivalEntry.address.lng);
-          setRoute(latlng, endlatlng);
+        if ($scope.festivalEntry.address){
+          if ($scope.festivalEntry.address.lat && $scope.festivalEntry.address.lng) {
+            var endlatlng = new google.maps.LatLng($scope.festivalEntry.address.lat, $scope.festivalEntry.address.lng);
+            setRoute(latlng, endlatlng);
+          }
         }
       });
     } else {
@@ -38,6 +40,12 @@ angular.module('festival', ['ngRoute'])
       {text: 'sent'}
     ];
 
+    //remove row from table
+
+    $scope.removeRow = function (idx) {
+      $scope.festivalEntry.dates.splice(idx, 1);
+    };
+
 
     var directionsService = new google.maps.DirectionsService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
@@ -45,7 +53,8 @@ angular.module('festival', ['ngRoute'])
     var myOptions = {
       zoom: 8,
       center: latlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      scrollwheel: false
     };
     var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
     directionsDisplay.setMap(map);
@@ -69,6 +78,10 @@ angular.module('festival', ['ngRoute'])
         if (!place.geometry) {
             window.alert("Autocomplete's returned place contains no geometry");
             return;
+        }
+
+        if (!$scope.festivalEntry.address) {
+          $scope.festivalEntry.address = {};
         }
 
         $scope.festivalEntry.address.lat = place.geometry.location.lat();
@@ -134,23 +147,21 @@ angular.module('festival', ['ngRoute'])
     }
 
     $scope.addRow = function() {
-      $scope.festivalEntry.dates.push({"date" : 1470345333,
-            "deadline" : 1470345333,
-            "contactType" : "email"});
+      $scope.festivalEntry.dates.push({"date" : Date.now(),
+            "deadline" : Date.now(),
+            "contactType" : "email",
+            "status": "not sent"});
     }
 
 
 
     $scope.submit = function() {
-      console.log($scope.festivalEntry.address.lat);
       if (!$scope.festivalEntry._id) {
         $scope.festivalEntry.$save(function() {
           console.log("created new entry");
         });
       } else {
-        $scope.festivalEntry.$update(function(){
-          console.log("updated");
-        });
+        $scope.festivalEntry.$update(function(){});
       }
       AlertService.setSuccess({msg: $scope.festivalEntry._id + ' has been updated successfully.'})
       window.location = "/#/list"

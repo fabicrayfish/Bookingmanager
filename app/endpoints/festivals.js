@@ -65,15 +65,24 @@ function handleError(res, reason, message, code) {
       festival.facebookUrl = updatedFestival.facebookUrl;
       festival.homepageUrl = updatedFestival.homepageUrl;
       festival.email = updatedFestival.email;
-      festival.address.route = updatedFestival.address.route;
-      festival.address.street_number = updatedFestival.address.street_number;
-      festival.address.locality = updatedFestival.address.locality;
-      festival.address.postal_code = updatedFestival.address.postal_code;
-      festival.address.country = updatedFestival.address.country;
-      festival.address.distance = updatedFestival.address.distance;
-      festival.address.lat = updatedFestival.address.lat;
-      festival.address.lng = updatedFestival.address.lng;
-      festival.dates = updatedFestival.dates;
+      if (updatedFestival.address){
+        festival.address.route = updatedFestival.address.route;
+        festival.address.street_number = updatedFestival.address.street_number;
+        festival.address.locality = updatedFestival.address.locality;
+        festival.address.postal_code = updatedFestival.address.postal_code;
+        festival.address.country = updatedFestival.address.country;
+        festival.address.distance = updatedFestival.address.distance;
+        festival.address.lat = updatedFestival.address.lat;
+        festival.address.lng = updatedFestival.address.lng;
+      } else {
+        festival.address = {};
+      }
+      if (updatedFestival.dates) {
+        festival.dates = updatedFestival.dates;
+      } else {
+        festival.dates = {}
+      }
+
 
 
       festival.save(function(err){

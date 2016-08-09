@@ -1,110 +1,118 @@
 
-<div ng-controller="FestivalCtrl" class="container">
+<div ng-controller="FestivalCtrl">
   <form class="form-horizontal" ng-submit="submit()">
-    <h1 class="text-center m-b-30">Festival</h1>
-    <h2>Basisdaten</h2>
-    <div class="form-group">
-      <label for="festivalName" class="col-sm-2 control-label">Veranstaltungsname</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="festivalName" ng-model="festivalEntry.festivalName" placeholder="Veranstaltungsname">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="name" class="col-sm-2 control-label">Ansprechpartner</label>
-      <div class="col-sm-6">
-        <input type="text" class="form-control" id="name" ng-model="festivalEntry.name" placeholder="Vorname">
-      </div>
-      <label for="surname" class="col-sm-1 control-label">Nachname</label>
-      <div class="col-sm-3">
-        <input type="text" class="form-control" id="surname" ng-model="festivalEntry.surname" placeholder="Nachname">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="facebook" class="col-sm-2 control-label">Facebook</label>
-      <div class="col-sm-10">
-        <div class="input-group">
-          <span class="input-group-addon" id="facebook-icon"><i class="fa fa-facebook" aria-hidden="true"></i></span>
-          <input type="text" class="form-control" id="facebookUrl" ng-model="festivalEntry.facebookUrl" placeholder="Facebook"  aria-describedby="facebook-icon">
+    <div class="container">
+      <h1 class="text-center m-b-30">Festival</h1>
+      <h2>Basisdaten</h2>
+      <div class="form-group">
+        <label for="festivalName" class="col-sm-2 control-label">Veranstaltungsname</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="festivalName" ng-model="festivalEntry.festivalName" placeholder="Veranstaltungsname" ng-required="!festivalEntry.name && !festivalEntry.surname">
         </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="email" class="col-sm-2 control-label">Homepage</label>
-      <div class="col-sm-10">
-        <div class="input-group">
-          <span class="input-group-addon" id="homepage-icon"><i class="fa fa-globe" aria-hidden="true"></i></span>
-          <input type="text" class="form-control" id="homepageUrl" ng-model="festivalEntry.homepageUrl" placeholder="Homepage"  aria-describedby="homepage-icon">
+      <div class="form-group">
+        <label for="name" class="col-sm-2 control-label">Ansprechpartner</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="name" ng-model="festivalEntry.name" placeholder="Vorname" ng-required="!festivalEntry.festivalName">
+        </div>
+        <label for="surname" class="col-sm-1 control-label">Nachname</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" id="surname" ng-model="festivalEntry.surname" placeholder="Nachname" ng-required="!festivalEntry.festivalName">
         </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="email" class="col-sm-2 control-label">E-mail</label>
-      <div class="col-sm-10">
-        <div class="input-group">
-          <span class="input-group-addon" id="facebook-icon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
-          <input type="text" class="form-control" id="email" ng-model="festivalEntry.email" placeholder="E-mail"  aria-describedby="email-icon">
+      <div class="form-group">
+        <label for="facebook" class="col-sm-2 control-label">Facebook</label>
+        <div class="col-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon" id="facebook-icon"><i class="fa fa-facebook" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" id="facebookUrl" ng-model="festivalEntry.facebookUrl" placeholder="Facebook"  aria-describedby="facebook-icon">
+          </div>
         </div>
       </div>
-    </div>
-    <h2>Zeitraum</h2>
-    <table class="table">
-      <tr>
-        <th>Datum</th>
-        <th>Bewerbungsfrist</th>
-        <th>Kontaktart</th>
-        <th>Status</th>
-      </tr>
-        <tr ng-repeat="festivalDate in festivalEntry.dates">
-           <td><a href="#" editable-date="festivalDate.date" e-single>{{ festivalDate.date || "-" }}</a></td>
-           <td><a href="#" editable-date="festivalDate.deadline" e-single>{{ festivalDate.deadline || "-" }}</a></td>
-           <td><a href="#" editable-select="festivalDate.contactType" e-ng-options="s.text as s.text for s in contactTypes" e-single>{{ festivalDate.contactType || "email" }}</a></td>
-           <td><a href="#" editable-select="festivalDate.status" e-ng-options="s.text as s.text for s in statusTypes" e-single>{{ festivalDate.status || "not sent" }}</a></td>
+      <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">Homepage</label>
+        <div class="col-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon" id="homepage-icon"><i class="fa fa-globe" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" id="homepageUrl" ng-model="festivalEntry.homepageUrl" placeholder="Homepage"  aria-describedby="homepage-icon">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">E-mail</label>
+        <div class="col-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon" id="facebook-icon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" id="email" ng-model="festivalEntry.email" placeholder="E-mail"  aria-describedby="email-icon">
+          </div>
+        </div>
+      </div>
+      <h2>Zeitraum</h2>
+      <table class="table">
+        <tr>
+          <th class="col-sm-1">Delete</th>
+          <th class="col-sm-2">Datum</th>
+          <th class="col-sm-2">Bewerbungsfrist</th>
+          <th class="col-sm-1">Kontaktart</th>
+          <th class="col-sm-4">Status</th>
         </tr>
-    <table>
-      <input type="button" class="btn btn-primary" value="Add Row" ng-click="addRow()" />
-    <h2>Ort</h2>
-    <div class="row">
-      <div class="col-sm-8 col-sm-offset-2">
-        <input type="text" class="form-control" id="map_search">
+          <tr ng-repeat="festivalDate in festivalEntry.dates">
+              <td><button type="button" class="btn btn-danger" ng-click="removeRow($index)"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button></td>
+             <td><a href="#" editable-date="festivalDate.date" e-single>{{ festivalDate.date || Date.now() | date:'dd-MM-yyyy'}}</a></td>
+             <td><a href="#" editable-date="festivalDate.deadline" e-single>{{ festivalDate.deadline || Date.now()   | date:'dd-MM-yyyy'}}</a></td>
+             <td><a href="#" editable-select="festivalDate.contactType" e-ng-options="s.text as s.text for s in contactTypes" e-single>{{ festivalDate.contactType || "email" }}</a></td>
+             <td><a href="#" editable-select="festivalDate.status" e-ng-options="s.text as s.text for s in statusTypes" e-single>{{ festivalDate.status || "not sent" }}</a></td>
+          </tr>
+      </table>
+      <div class="m-l-8">
+        <button type="button" class="btn btn-primary" ng-click="addRow()" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="address.street" class="col-sm-2 control-label">Straße</label>
-      <div class="col-sm-6">
-        <input type="text" class="form-control" id="address.street" ng-model="festivalEntry.address.route" placeholder="Street" disabled>
+      <h2>Ort</h2>
+      <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+          <input type="text" class="form-control" id="map_search">
+        </div>
       </div>
-      <label for="address.street_number" class="col-sm-1 control-label">Nummer</label>
-      <div class="col-sm-3">
-        <input type="text" class="form-control" id="address.street_number" ng-model="festivalEntry.address.street_number" placeholder="Nummer" disabled>
+      <div class="form-group">
+        <label for="address.street" class="col-sm-2 control-label">Straße</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="address.street" ng-model="festivalEntry.address.route" placeholder="Street" disabled>
+        </div>
+        <label for="address.street_number" class="col-sm-1 control-label">Nummer</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" id="address.street_number" ng-model="festivalEntry.address.street_number" placeholder="Nummer" disabled>
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="city" class="col-sm-2 control-label">Stadt</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="city" ng-model="festivalEntry.address.locality" placeholder="Stadt" disabled>
+      <div class="form-group">
+        <label for="city" class="col-sm-2 control-label">Stadt</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="city" ng-model="festivalEntry.address.locality" placeholder="Stadt" disabled>
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="postal_code" class="col-sm-2 control-label">Postleitzahl</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="postal_code" ng-model="festivalEntry.address.postal_code" placeholder="Postleitzahl" disabled>
+      <div class="form-group">
+        <label for="postal_code" class="col-sm-2 control-label">Postleitzahl</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="postal_code" ng-model="festivalEntry.address.postal_code" placeholder="Postleitzahl" disabled>
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="country" class="col-sm-2 control-label">Land</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="country" ng-model="festivalEntry.address.country" placeholder="Land" disabled>
+      <div class="form-group">
+        <label for="country" class="col-sm-2 control-label">Land</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="country" ng-model="festivalEntry.address.country" placeholder="Land" disabled>
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="distance" class="col-sm-2 control-label">Distanz (Proberaum)</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="distance" ng-model="festivalEntry.address.distance" placeholder="Distance" disabled>
+      <div class="form-group">
+        <label for="distance" class="col-sm-2 control-label">Distanz (Proberaum)</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="distance" ng-model="festivalEntry.address.distance" placeholder="Distance" disabled>
+        </div>
       </div>
     </div>
     <div id="map_canvas"></div>
-    <div class="col-sm-12 text-center m-y-30">
-        <input type="submit" class="btn btn-primary btn-lg" id="submit" value="Save" />
+    <div class="container">
+      <div class="col-sm-12 text-center m-y-30">
+          <input type="submit" class="btn btn-primary btn-lg" id="submit" value="Save" />
+      </div>
     </div>
   </form>
 </div>

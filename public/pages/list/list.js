@@ -16,6 +16,20 @@ angular.module('list', ['ngRoute'])
   }
 
   $scope.festivals = festivalEntry.query();
+  $scope.currentPage = 1; // keeps track of the current page
+  $scope.pageSize = 5; // holds the number of items per page
+
+  $scope.sort = function(keyname){
+    $scope.sortKey = keyname;   //set the sortKey to the param passed
+    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+  }
+
+  $scope.nextPage = function() {
+    console.log("nextPage");
+    $scope.currentPage = $scope.currentPage + 1;
+    $scope.$apply();
+  };
+
 
   $scope.redirect = function(festival) {
     var location = "/#/festival/" + festival._id;

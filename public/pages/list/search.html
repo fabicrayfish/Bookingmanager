@@ -9,14 +9,27 @@
   </div>
   <table class="table table-hover" ng-controller="FestivalListCtrl">
     <tr>
-      <th>Festival</th>
-      <th>Stadt</th>
-      <th>Entfernung</th>
+      <th class="col-sm-4" ng-click="sort('festivalName')">Festival
+        <span class="glyphicon sort-icon" ng-show="sortKey=='festivalName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      </th>
+      <th class="col-sm-4" ng-click="sort('address.locality')">Stadt
+        <span class="glyphicon sort-icon" ng-show="sortKey=='address.locality'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      </th>
+      <th class="col-sm-4" ng-click="sort('address.distance')">Entfernung
+        <span class="glyphicon sort-icon" ng-show="sortKey=='address.distance'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      </th>
     </tr>
-    <tr ng-repeat="festival in festivals | filter: search" ng-click="redirect(festival)">
+    <tr dir-paginate="festival in festivals | orderBy:sortKey:reverse | filter: search | itemsPerPage:5" ng-click="redirect(festival)">
       <td>{{festival.festivalName}}</td>
       <td>{{festival.address.locality}}</td>
       <td>{{festival.address.distance}}</td>
     </tr>
   </table>
+  <div class="col-sm-12 text-center">
+  <dir-pagination-controls
+     max-size="5"
+     direction-links="true"
+     boundary-links="true" >
+  </dir-pagination-controls>
+</div>
 </div>

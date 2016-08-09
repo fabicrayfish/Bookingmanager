@@ -1,8 +1,8 @@
-var app = angular.module('BookingManager', ['ngRoute', 'ngResource', 'ngStorage', 'xeditable', 'BookingManager.services', 'festival', 'list', 'login']);
+var app = angular.module('BookingManager', ['ngRoute', 'ngResource', 'ngStorage', 'xeditable', 'angularUtils.directives.dirPagination', 'BookingManager.services', 'festival', 'list', 'login']);
 
 app.config(function($locationProvider, $routeProvider, $httpProvider) {
   $httpProvider.interceptors.push('authenticationInterceptor');
-  $routeProvider.otherwise({redirectTo: '/festival'});
+  $routeProvider.otherwise({redirectTo: '/list'});
 });
 
 app.factory('authenticationInterceptor', function($q, $location, $localStorage){

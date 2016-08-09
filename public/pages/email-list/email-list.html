@@ -1,0 +1,35 @@
+
+<div class="container">
+  <div class="alert alert-success alert-dismissible" role="alert" ng-show="alertMessage"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{alertMessage}}</div>
+  <div class="row m-y-30">
+    <div class="col-sm-8 col-sm-offset-2">
+        <input type="text" class="form-control" ng-model="search">
+        <p ng-show="search"> Du suchst gerade nach: {{search.toUpperCase()}}</p>
+    </div>
+  </div>
+  <table class="table table-hover" ng-controller="EmailListCtrl">
+    <tr>
+      <th class="col-sm-4" ng-click="sort('subject')">Subject
+        <span class="glyphicon sort-icon" ng-show="sortKey=='subject'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      </th>
+      <th class="col-sm-4" ng-click="sort('validFrom')">Gültig ab
+        <span class="glyphicon sort-icon" ng-show="sortKey=='validFrom'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      </th>
+      <th class="col-sm-4" ng-click="sort('validUntil')">Gültig bis
+        <span class="glyphicon sort-icon" ng-show="sortKey=='validUntil'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      </th>
+    </tr>
+    <tr dir-paginate="email in emails | orderBy:sortKey:reverse | filter: search | itemsPerPage:5" ng-click="redirect(email)">
+      <td>{{email.subject}}</td>
+      <td>{{email.validFrom}}</td>
+      <td>{{email.validUntil}}</td>
+    </tr>
+  </table>
+  <div class="col-sm-12 text-center">
+  <dir-pagination-controls
+     max-size="5"
+     direction-links="true"
+     boundary-links="true" >
+  </dir-pagination-controls>
+</div>
+</div>

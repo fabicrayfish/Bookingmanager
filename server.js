@@ -147,8 +147,10 @@ function checkToken(req, res, next){
 
 
 var festivals = require("./app/endpoints/festivals.js");
+var emails = require("./app/endpoints/emails.js");
 
 app.use('/api', checkToken, festivals);
+app.use('/api', checkToken, emails);
 
 // Angular Routes
 

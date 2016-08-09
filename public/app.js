@@ -1,4 +1,4 @@
-var app = angular.module('BookingManager', ['ngRoute', 'ngResource', 'ngStorage', 'xeditable', 'angularUtils.directives.dirPagination', 'BookingManager.services', 'festival', 'list', 'login']);
+var app = angular.module('BookingManager', ['ngRoute', 'ngResource', 'ngStorage', 'xeditable', 'angularUtils.directives.dirPagination', 'BookingManager.services', 'festival', 'list', 'login', 'emails']);
 
 app.config(function($locationProvider, $routeProvider, $httpProvider) {
   $httpProvider.interceptors.push('authenticationInterceptor');
@@ -57,6 +57,16 @@ app.factory('AlertService', function () {
 angular.module('BookingManager.services', [])
   .factory('festivalEntry', function($resource) {
     return $resource('./api/festivals/:id', { id: '@_id' }, {
+      update: {
+        method: 'PUT' // this method issues a PUT request
+      },
+      delete: {
+        method: 'DELETE'
+      }
+    });
+  })
+    .factory('emailsEntry', function($resource) {
+    return $resource('./api/emails/:id', { id: '@_id' }, {
       update: {
         method: 'PUT' // this method issues a PUT request
       },

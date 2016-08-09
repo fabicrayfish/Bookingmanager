@@ -36,8 +36,14 @@ angular.module('festival', ['ngRoute'])
     ];
 
     $scope.statusTypes = [
-      {text: 'not sent'},
-      {text: 'sent'}
+      {text: 'nicht versendet'},
+      {text: 'versendet'}
+    ];
+
+    $scope.responseTypes = [
+      {text: 'Zusage'},
+      {text: 'Absage'},
+      {text: 'Empfangsbestätigung'}
     ];
 
     //remove row from table
@@ -153,6 +159,21 @@ angular.module('festival', ['ngRoute'])
             "status": "not sent"});
     }
 
+    $scope.backToList = function() {
+        window.location = "/#/list"
+    }
+
+    $scope.delete = function() {
+      if ($scope.festivalEntry._id) {
+        console.log("deletion started");
+        $scope.festivalEntry.$delete(function() {
+          console.log("deleted entry");
+        });
+
+        AlertService.setSuccess({msg: $scope.festivalEntry.festivalName + ' has been deleted.'})
+        window.location = "/#/list"
+      }
+    }
 
 
     $scope.submit = function() {
@@ -163,7 +184,7 @@ angular.module('festival', ['ngRoute'])
       } else {
         $scope.festivalEntry.$update(function(){});
       }
-      AlertService.setSuccess({msg: $scope.festivalEntry._id + ' has been updated successfully.'})
+      AlertService.setSuccess({msg: $scope.festivalEntry.festivalName + ' has been updated successfully.'})
       window.location = "/#/list"
     }
 

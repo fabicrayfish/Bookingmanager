@@ -16,7 +16,7 @@ function handleError(res, reason, message, code) {
 
     Festival.find({}, function(err, docs){
       if (err) {
-        handleError(res, err.message, "Failed to get contact.");
+        handleError(res, err.message, "Failed to get festival.");
       } else {
         res.status(200).json(docs);
       }
@@ -28,7 +28,18 @@ function handleError(res, reason, message, code) {
     var id = req.params.id;
     Festival.findById(id, function(err, docs){
       if (err) {
-        handleError(res, err.message, "Failed to get contact.");
+        handleError(res, err.message, "Failed to get festival.");
+      } else {
+        res.status(200).json(docs);
+      }
+    });
+  });
+
+  router.delete('/festivals/:id', function(req, res){
+    var id = req.params.id;
+    Festival.findById(id).remove( function(err, docs){
+      if (err) {
+        handleError(res, err.message, "Failed to delete festival.");
       } else {
         res.status(200).json(docs);
       }

@@ -54,14 +54,16 @@
           <th class="col-sm-2">Datum</th>
           <th class="col-sm-2">Bewerbungsfrist</th>
           <th class="col-sm-1">Kontaktart</th>
-          <th class="col-sm-4">Status</th>
+          <th class="col-sm-1">Status</th>
+          <th class="col-sm-1">Antwort</th>
         </tr>
           <tr ng-repeat="festivalDate in festivalEntry.dates">
               <td><button type="button" class="btn btn-danger" ng-click="removeRow($index)"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button></td>
              <td><a href="#" editable-date="festivalDate.date" e-single>{{ festivalDate.date || Date.now() | date:'dd-MM-yyyy'}}</a></td>
              <td><a href="#" editable-date="festivalDate.deadline" e-single>{{ festivalDate.deadline || Date.now()   | date:'dd-MM-yyyy'}}</a></td>
              <td><a href="#" editable-select="festivalDate.contactType" e-ng-options="s.text as s.text for s in contactTypes" e-single>{{ festivalDate.contactType || "email" }}</a></td>
-             <td><a href="#" editable-select="festivalDate.status" e-ng-options="s.text as s.text for s in statusTypes" e-single>{{ festivalDate.status || "not sent" }}</a></td>
+             <td><a href="#" editable-select="festivalDate.status" e-ng-options="s.text as s.text for s in statusTypes" e-single>{{ festivalDate.status || "nicht versendet" }}</a></td>
+             <td><a href="#" editable-select="festivalDate.response" e-ng-options="s.text as s.text for s in responseTypes" e-single>{{ festivalDate.response || "-" }}</a></td>
           </tr>
       </table>
       <div class="m-l-8">
@@ -111,7 +113,9 @@
     <div id="map_canvas"></div>
     <div class="container">
       <div class="col-sm-12 text-center m-y-30">
-          <input type="submit" class="btn btn-primary btn-lg" id="submit" value="Save" />
+        <button type="button" class="btn btn-lg" id="cancel" ng-click="backToList()" >Cancel</button>
+        <button type="button" class="btn btn-danger btn-lg" id="delete" ng-click="delete()" ng-show="festivalEntry._id" >Delete</button>
+        <input type="submit" class="btn btn-primary btn-lg" id="submit" value="Save" />
       </div>
     </div>
   </form>

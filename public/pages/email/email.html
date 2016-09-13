@@ -1,0 +1,50 @@
+<div ng-controller="EmailCtrl">
+  <form class="form-horizontal" ng-submit="submit()">
+    <div class="container">
+      <h1 class="text-center m-b-30">Emailvorlage</h1>
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">Subject</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="subject" ng-model="email.subject" >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">Body</label>
+        <div class="col-sm-10">
+          <textarea class="form-control" rows="8" id="body" ng-model="email.body"></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">StartDate</label>
+        <div class="col-sm-10">
+          <p class="input-group">
+          <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="email.startDate"  ng-init="email.startDate=''" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="" class="col-sm-2 control-label">EndDate</label>
+        <div class="col-sm-10">
+          <p class="input-group">
+            <input type="text" class="form-control" uib-datepicker-popup ng-model="email.endDate" ng-init="email.endDate=''" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+  <div class="container">
+    <div class="col-sm-12 text-center m-y-30">
+      <button type="button" class="btn btn-lg" id="cancel" ng-click="backToList()" >Cancel</button>
+      <button type="button" class="btn btn-danger btn-lg" id="delete" ng-click="delete()" ng-show="email._id" >Delete</button>
+      <input type="submit" class="btn btn-primary btn-lg" id="submit" value="Save" />
+    </div>
+  </div>
+  </form>
+</div>

@@ -40,7 +40,7 @@ var mongodbURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/';
 mongoose.connect(mongodbURI);
 console.log("Database connection ready.");
 
-var server = app.listen(process.env.PORT || 5000, function() {
+var server = app.listen(process.env.PORT || 8888, function() {
   var port = server.address().port;
   console.log("Server now running on port: ", port);
 });

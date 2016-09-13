@@ -72,8 +72,8 @@ function handleError(res, reason, message, code) {
       }
       email.subject = updatedEmail.subject;
       email.body = updatedEmail.body;
-      email.validFrom = updatedEmail.validFrom;
-      email.validUntil = updatedEmail.validUntil;
+      email.date.startDate = updatedEmail.startDate;
+      email.date.endDate = updatedEmail.endDate;
 
 
 

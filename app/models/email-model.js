@@ -5,6 +5,8 @@ var Schema = mongoose.Schema;
 module.exports = mongoose.model('Email', new Schema({
   subject: String,
   body: String,
-  validFrom: Date,
-  validUntil: Date
+  date: {
+    startDate: Date,
+    endDate: Date
+  }
 }));

@@ -13,73 +13,87 @@ angular.module('festival', ['ngRoute'])
 })
 
 .controller('FestivalCtrl', function($scope, festivalEntry, $routeParams, AlertService){
-
-    if ($routeParams.id) {
-      var id = $routeParams.id;
-
-      $scope.festivalEntry = festivalEntry.get({ id: id }, function(){
-        if ($scope.festivalEntry.address){
-          if ($scope.festivalEntry.address.lat && $scope.festivalEntry.address.lng) {
-            var endlatlng = new google.maps.LatLng($scope.festivalEntry.address.lat, $scope.festivalEntry.address.lng);
-            setRoute(latlng, endlatlng);
-          }
-        }
-      });
-    } else {
-      $scope.festivalEntry = new festivalEntry;
-    }
-
-    $scope.contactTypes = [
-      {text: 'email'},
-      {text: 'homepage'},
-      {text: 'facebook'}
-    ];
-
-    $scope.statusTypes = [
-      {text: 'nicht versendet'},
-      {text: 'versendet'}
-    ];
-
-    $scope.responseTypes = [
-      {text: 'Zusage'},
-      {text: 'Absage'},
-      {text: 'Empfangsbestätigung'}
-    ];
-
-    //remove row from table
-
-    $scope.removeRow = function (idx) {
-      $scope.festivalEntry.dates.splice(idx, 1);
-    };
-
-
     var directionsService = new google.maps.DirectionsService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
-    var latlng = new google.maps.LatLng(49.994704, 8.669842);
-    var myOptions = {
-      zoom: 8,
-      center: latlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      scrollwheel: false
-    };
-    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-    directionsDisplay.setMap(map);
-    $scope.map = directionsDisplay;
+    var rehearsalRoom = new google.maps.LatLng(49.994704, 8.669842);
+    
+    var setupFestival = function() {
+      if ($routeParams.id) {
+        var id = $routeParams.id;
+        $scope.festivalEntry = festivalEntry.get({ id: id }, function(){
+          console.log("Setup Festival");
+          setRouteIfAddressIsSet();
+        });
+      } else {
+        $scope.festivalEntry = new festivalEntry;
+      }
+    }
 
+    var setRouteIfAddressIsSet = function() {
+      if ($scope.festivalEntry.address){
+        console.log($scope.festivalEntry.address);
+        if ($scope.festivalEntry.address.lat && $scope.festivalEntry.address.lng) {
+          console.log("lat&long found");
+          var endlatlng = new google.maps.LatLng($scope.festivalEntry.address.lat, $scope.festivalEntry.address.lng);
+          setRoute(rehearsalRoom, endlatlng);
+        }
+      }
+    }
 
-    var input = document.getElementById("map_search");
-    var acOptions = {};
-    //$scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-    var autocomplete = new google.maps.places.Autocomplete(input, acOptions);
+    var setupSelects = function() {
+      $scope.contactTypes = [
+        {text: 'email'},
+        {text: 'homepage'},
+        {text: 'facebook'}
+      ];
 
-    console.log("setup autocomplete.");
-    $scope.autocomplete = autocomplete;
+      $scope.statusTypes = [
+        {text: 'nicht versendet'},
+        {text: 'versendet'}
+      ];
 
-    autocomplete.addListener('place_changed', function(){ setPlace(); });
+      $scope.responseTypes = [
+        {text: 'Zusage'},
+        {text: 'Absage'},
+        {text: 'Empfangsbestätigung'}
+      ];
+    }
 
+    var setupMap = function() {
+      $scope.map = getMap();
+      setupAutofillForSearchingMap("map_search");
+    }
 
-    var setPlace = function () {
-        //infoWindow.close();
+    var getMap = function() {
+      var myOptions = {
+        zoom: 8,
+        center: rehearsalRoom,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        scrollwheel: false
+      };
+      var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+      directionsDisplay.setMap(map);
+
+      return directionsDisplay;
+    }
+
+    var setupAutofillForSearchingMap = function(inputName){
+      var input = document.getElementById(inputName);
+      var acOptions = {};
+      var autocomplete = new google.maps.places.Autocomplete(input, acOptions);
+
+      console.log("setup autocomplete.");
+      $scope.autocomplete = autocomplete;
+
+      autocomplete.addListener('place_changed', function(){ setPlace(autocomplete); });
+    }
+
+    setupFestival();
+    setupSelects();
+    setupMap();
+
+    var setPlace = function (autocomplete) {
+
         var place = autocomplete.getPlace();
         if (!place.geometry) {
             window.alert("Autocomplete's returned place contains no geometry");
@@ -93,7 +107,7 @@ angular.module('festival', ['ngRoute'])
         $scope.festivalEntry.address.lat = place.geometry.location.lat();
         $scope.festivalEntry.address.lng = place.geometry.location.lng();
 
-        setRoute(latlng, place.geometry.location, place, fillInAddress);
+        setRoute(rehearsalRoom, place.geometry.location, place, fillInAddress);
 
     }
 
@@ -129,7 +143,8 @@ angular.module('festival', ['ngRoute'])
       };
 
       angular.forEach($scope.festivalEntry.address, function(value, key){
-        if (!key == "lat" || !key == "len") {
+        if (key != "lat" && key != "lng") {
+          console.log(key);
           $scope.festivalEntry.address[key] = "";
         }
       });
@@ -139,10 +154,8 @@ angular.module('festival', ['ngRoute'])
       // and fill the corresponding field on the form.
       for (var i = 0; i < place.address_components.length; i++) {
         var addressType = place.address_components[i].types[0];
-        $scope.festivalEntry.address[ addressType ] = "";
         if (componentForm[addressType]) {
           var val = place.address_components[i][componentForm[addressType]];
-          //var model = $parse(addressType);
           $scope.festivalEntry.address[ addressType ] = val;
         }
       }
@@ -159,17 +172,18 @@ angular.module('festival', ['ngRoute'])
             "status": "not sent"});
     }
 
+    $scope.removeRow = function (idx) {
+      $scope.festivalEntry.dates.splice(idx, 1);
+    };
+
+
     $scope.backToList = function() {
         window.location = "/#/list"
     }
 
     $scope.delete = function() {
       if ($scope.festivalEntry._id) {
-        console.log("deletion started");
-        $scope.festivalEntry.$delete(function() {
-          console.log("deleted entry");
-        });
-
+        $scope.festivalEntry.$delete(function() {});
         AlertService.setSuccess({msg: $scope.festivalEntry.festivalName + ' has been deleted.'})
         window.location = "/#/list"
       }
@@ -178,9 +192,7 @@ angular.module('festival', ['ngRoute'])
 
     $scope.submit = function() {
       if (!$scope.festivalEntry._id) {
-        $scope.festivalEntry.$save(function() {
-          console.log("created new entry");
-        });
+        $scope.festivalEntry.$save(function() {});
       } else {
         $scope.festivalEntry.$update(function(){});
       }

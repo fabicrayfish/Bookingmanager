@@ -1,4 +1,4 @@
-var app = angular.module('BookingManager', ['ngRoute', 'ngResource', 'ngStorage', 'xeditable', 'angularUtils.directives.dirPagination', 'BookingManager.services', 'festival', 'list', 'login', 'emails']);
+var app = angular.module('BookingManager', ['ngRoute', 'ngTouch', 'ngAnimate', 'ngResource', 'ngStorage', 'xeditable', 'angularUtils.directives.dirPagination', 'BookingManager.services', 'festival', 'list', 'login', 'emails', 'email']);
 
 app.config(function($locationProvider, $routeProvider, $httpProvider) {
   $httpProvider.interceptors.push('authenticationInterceptor');

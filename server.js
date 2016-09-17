@@ -35,7 +35,7 @@ var db = mongoose.connection;
 
 db.on('error', console.error);
 
-var mongodbURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/';
+var mongodbURI = process.env.MONGODB_URI || 'mongodb://mongo:27017/';
 
 mongoose.connect(mongodbURI);
 console.log("Database connection ready.");

@@ -882,6 +882,15 @@ Query.prototype.setOptions = function(options, overwrite) {
     return this;
   }
 
+  if (options && Array.isArray(options.populate)) {
+    var populate = options.populate;
+    delete options.populate;
+    var _numPopulate = populate.length;
+    for (var i = 0; i < _numPopulate; ++i) {
+      this.populate(populate[i]);
+    }
+  }
+
   return Query.base.setOptions.call(this, options);
 };
 
@@ -1224,6 +1233,11 @@ Query.prototype._findOne = function(callback) {
  *
  * Passing a `callback` executes the query. The result of the query is a single document.
  *
+ * * *Note:* `conditions` is optional, and if `conditions` is null or undefined,
+ * mongoose will send an empty `findOne` command to MongoDB, which will return
+ * an arbitrary document. If you're querying by `_id`, use `Model.findById()`
+ * instead.
+ *
  * ####Example
  *
  *     var query  = Kitten.where({ color: 'white' });
@@ -1273,6 +1287,9 @@ Query.prototype.findOne = function(conditions, projection, options, callback) {
 
   if (mquery.canMerge(conditions)) {
     this.merge(conditions);
+  } else if (conditions != null) {
+    throw new Error('Invalid argument to findOne(): ' +
+      util.inspect(conditions));
   }
 
   prepareDiscriminatorCriteria(this);
@@ -1643,7 +1660,19 @@ Query.prototype.findOneAndUpdate = function(criteria, doc, options, callback) {
     this._mergeUpdate(doc);
   }
 
-  options && this.setOptions(options);
+  if (options) {
+    options = utils.clone(options, { retainKeyOrder: true });
+    if (options.projection) {
+      this.select(options.projection);
+      delete options.projection;
+    }
+    if (options.fields) {
+      this.select(options.fields);
+      delete options.fields;
+    }
+
+    this.setOptions(options);
+  }
 
   if (!callback) {
     return this;
@@ -2205,23 +2234,34 @@ Query.prototype.exec = function exec(op, callback) {
     this.op = op;
   }
 
-  return new Promise.ES6(function(resolve, reject) {
+  var _results;
+  var promise = new Promise.ES6(function(resolve, reject) {
     if (!_this.op) {
-      callback && callback(null, undefined);
       resolve();
       return;
     }
 
     _this[_this.op].call(_this, function(error, res) {
       if (error) {
-        callback && callback(error);
         reject(error);
         return;
       }
-      callback && callback.apply(null, arguments);
+      _results = arguments;
       resolve(res);
     });
   });
+
+  if (callback) {
+    promise.then(
+      function() {
+        callback.apply(null, _results);
+      },
+      function(error) {
+        callback(error);
+      });
+  }
+
+  return promise;
 };
 
 /**
@@ -2873,9 +2913,17 @@ Query.prototype.stream = util.deprecate(Query.prototype.stream, 'Mongoose: ' +
 Query.prototype.cursor = function cursor(opts) {
   this._applyPaths();
   this._fields = this._castFields(this._fields);
+  this.setOptions({ fields: this._fieldsForExec() });
   if (opts) {
     this.setOptions(opts);
   }
+
+  try {
+    this.cast(this.model);
+  } catch (err) {
+    return (new QueryCursor(this, this.options))._markError(err);
+  }
+
   return new QueryCursor(this, this.options);
 };
 

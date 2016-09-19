@@ -21,7 +21,6 @@ angular.module('festival', ['ngRoute'])
       if ($routeParams.id) {
         var id = $routeParams.id;
         $scope.festivalEntry = festivalEntry.get({ id: id }, function(){
-          console.log("Setup Festival");
           setRouteIfAddressIsSet();
         });
       } else {
@@ -31,9 +30,7 @@ angular.module('festival', ['ngRoute'])
 
     var setRouteIfAddressIsSet = function() {
       if ($scope.festivalEntry.address){
-        console.log($scope.festivalEntry.address);
         if ($scope.festivalEntry.address.lat && $scope.festivalEntry.address.lng) {
-          console.log("lat&long found");
           var endlatlng = new google.maps.LatLng($scope.festivalEntry.address.lat, $scope.festivalEntry.address.lng);
           setRoute(rehearsalRoom, endlatlng);
         }
@@ -82,7 +79,6 @@ angular.module('festival', ['ngRoute'])
       var acOptions = {};
       var autocomplete = new google.maps.places.Autocomplete(input, acOptions);
 
-      console.log("setup autocomplete.");
       $scope.autocomplete = autocomplete;
 
       autocomplete.addListener('place_changed', function(){ setPlace(autocomplete); });
@@ -119,7 +115,7 @@ angular.module('festival', ['ngRoute'])
       };
 
       var distance = ""
-
+      
       directionsService.route(request, function(result, status) {
         if (status == 'OK') {
           distance = result["routes"][0]["legs"][0]["distance"]["text"];
@@ -144,7 +140,6 @@ angular.module('festival', ['ngRoute'])
 
       angular.forEach($scope.festivalEntry.address, function(value, key){
         if (key != "lat" && key != "lng") {
-          console.log(key);
           $scope.festivalEntry.address[key] = "";
         }
       });

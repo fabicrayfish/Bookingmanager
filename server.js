@@ -6,6 +6,7 @@ var mongoose = require("mongoose");
 var ObjectID = mongodb.ObjectID;
 var nodemailer = require("nodemailer");
 var schedule = require('node-schedule');
+var moment = require('moment');
 
 var jwt = require("jsonwebtoken");
 var config = require("./config.js");
@@ -55,24 +56,66 @@ function handleError(res, reason, message, code) {
 
 // Testmail
 
+var Festival = require('./app/models/festival-model.js')
+var Emails = require('./app/models/email-model.js')
+
+app.get('/api/test', function (req, res){
+  Festival.find({ "dates.deadline" : { $gte: moment().format(), $lt: moment().add(60, 'days').calendar() }}, function(err, festivals){
+    festivals.forEach(function(festival){
+      var festivalDeadLine = moment(festival.dates[0].deadline);
+      Emails.findOne({"date.startDate": {$lt: festivalDeadLine}, "date.endDate": {$gte: festivalDeadLine} }, {}, { sort: { 'date.endDate' : -1 } }, function(err, emailTemplate){
+        var body = emailTemplate.body.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
+        var subject = emailTemplate.subject.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
+
+        var mailOptions = {
+            from: '"Stereo Satellite Booking" <booking@stereo-satellite.de>', // sender address
+            to: 'fabi.fink@gmail.com', // list of receivers
+            subject: subject, // Subject line
+            text: body // plaintext body
+        };
+
+        // send mail with defined transport object
+        transporter.sendMail(mailOptions, function(err, info){
+            if(err){
+                console.log(err);
+            }
+
+            console.log(info);
+        });
+      });
+
+    });
+    res.json({"status": "success"});
+  });
+});
+
 app.get('/api/testmail', function(req, res){
   var j = schedule.scheduleJob('20 * * * * *', function(){
-    console.log("will sent email");
-    // setup e-mail data with unicode symbols
-    var mailOptions = {
-        from: '"Test 👥" <test@alaskapirate.de>', // sender address
-        to: 'fabi.fink@gmail.com', // list of receivers
-        subject: 'Hello ✔', // Subject line
-        text: 'Hello world 🐴' // plaintext body
-    };
+    Festival.find({ "dates.deadline" : { $gte: moment().format(), $lt: moment().add(60, 'days').calendar() }}, function(err, festivals){
+      festivals.forEach(function(festival){
+        var festivalDeadLine = moment(festival.dates[0].deadline);
+        Emails.findOne({"date.startDate": {$lt: festivalDeadLine}, "date.endDate": {$gte: festivalDeadLine} }, {}, { sort: { 'date.endDate' : -1 } }, function(err, emailTemplate){
+          var body = emailTemplate.body.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
+          var subject = emailTemplate.subject.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
 
-    // send mail with defined transport object
-    transporter.sendMail(mailOptions, function(err, info){
-        if(err){
-            console.log(err);
-        }
+          var mailOptions = {
+              from: '"Stereo Satellite Booking" <booking@stereo-satellite.de>', // sender address
+              to: 'fabi.fink@gmail.com', // list of receivers
+              subject: subject, // Subject line
+              text: body // plaintext body
+          };
 
-        console.log(info);
+          // send mail with defined transport object
+          transporter.sendMail(mailOptions, function(err, info){
+              if(err){
+                  console.log(err);
+              }
+
+              console.log(info);
+          });
+        });
+
+      });
     });
   });
 

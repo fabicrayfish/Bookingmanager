@@ -1,4 +1,7 @@
 FROM node:latest
 
-EXPOSE 8888
-CMD [ "npm", "start" ]
+# Create app directory
+WORKDIR /usr/src/app
+
+# Bundle app source
+COPY . /usr/src/app

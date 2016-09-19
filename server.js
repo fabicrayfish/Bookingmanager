@@ -35,7 +35,7 @@ var db = mongoose.connection;
 
 db.on('error', console.error);
 
-var mongodbURI = process.env.MONGODB_URI || 'mongodb://mongo:27017/';
+var mongodbURI = 'mongodb://localhost:27017/';
 
 mongoose.connect(mongodbURI);
 console.log("Database connection ready.");
@@ -86,6 +86,9 @@ app.get('/api/testmail', function(req, res){
 // User Authentication
 
 app.post('/api/authenticate', function(req, res){
+  User.find({}, function(err, users){
+    console.log(users);
+  });
   User.findOne({
     name: req.body.name
   }, function(err, user){
@@ -93,29 +96,29 @@ app.post('/api/authenticate', function(req, res){
       handleError(res, err.message, err);
     }
 
+    console.log("User: ", user);
     if(!user){
       res.json({success: false, message: "Authentication failed, no user with this name available"});
-    }
-
-    if(user.password != req.body.password){
-      res.json({success: false, message: "Authentication failed, password is incorrect."});
     } else {
+      if(user.password != req.body.password){
+        res.json({success: false, message: "Authentication failed, password is incorrect."});
+      } else {
 
-      // Create Json Web Token
+        // Create Json Web Token
 
-      var userData = {'name' : user.name, 'admin': user.admin};
+        var userData = {'name' : user.name, 'admin': user.admin};
 
-      var token = jwt.sign(userData, config.jwtsecret, {
-        expiresIn: "1 day"  // 24 hours
-      });
+        var token = jwt.sign(userData, config.jwtsecret, {
+          expiresIn: "1 day"  // 24 hours
+        });
 
-      res.json({
-        success: true,
-        message: "Authentication succesfull",
-        token: token
-      });
+        res.json({
+          success: true,
+          message: "Authentication succesfull",
+          token: token
+        });
+      }
     }
-
   });
 
 });

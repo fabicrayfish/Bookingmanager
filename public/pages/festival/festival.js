@@ -16,7 +16,7 @@ angular.module('festival', ['ngRoute'])
     var directionsService = new google.maps.DirectionsService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
     var rehearsalRoom = new google.maps.LatLng(49.994704, 8.669842);
-    
+
     var setupFestival = function() {
       if ($routeParams.id) {
         var id = $routeParams.id;
@@ -178,14 +178,14 @@ angular.module('festival', ['ngRoute'])
 
 
     $scope.backToList = function() {
-        window.location = "/#/list"
+        window.location = "/#/festivals"
     }
 
     $scope.delete = function() {
       if ($scope.festivalEntry._id) {
         $scope.festivalEntry.$delete(function() {});
         AlertService.setSuccess({msg: $scope.festivalEntry.festivalName + ' has been deleted.'})
-        window.location = "/#/list"
+        window.location = "/#/festivals"
       }
     }
 
@@ -197,7 +197,7 @@ angular.module('festival', ['ngRoute'])
         $scope.festivalEntry.$update(function(){});
       }
       AlertService.setSuccess({msg: $scope.festivalEntry.festivalName + ' has been updated successfully.'})
-      window.location = "/#/list"
+      window.location = "/#/festivals"
     }
 
 

@@ -13,33 +13,32 @@ angular.module('email', ['ngRoute', 'ngTouch', 'ngAnimate', 'ui.bootstrap'])
 })
 
 .controller('EmailCtrl', function($scope, emailsEntry, $timeout, $routeParams, AlertService){
-  var initDate = function() {
-    $scope.email.startdate = "";
-    $scope.email.endDate = "";
-  }
-
-
-
-
   var setupEmail = function() {
     if ($routeParams.id) {
       var id = $routeParams.id;
       var emailQuery = emailsEntry.get({ id: id })
       emailQuery.$promise.then(function(data){
-        $scope.email = data;
-        if ($scope.email.startDate === null || typeof $scope.email.startDate === "undefined") {
-          console.log("undefined startDate");
-          initDate();
+        $scope.email = new emailsEntry();
+        angular.copy(data, $scope.email);
+        if($scope.email.date.startDate){
+          $scope.email.date.startDate = new Date($scope.email.date.startDate);
+        }
+        if($scope.email.date.endDate){
+          $scope.email.date.endDate = new Date($scope.email.date.endDate);
         }
       });
     } else {
-      console.log("new entry");
       $scope.email = new emailsEntry;
-      //initDate();
     }
   }
 
+  $scope.endDateOptions = {
+    minDate: new Date()
+  }
 
+  $scope.startDateOptions = {
+    maxDate: new Date()
+  }
 
   setupEmail();
 
@@ -57,108 +56,25 @@ angular.module('email', ['ngRoute', 'ngTouch', 'ngAnimate', 'ui.bootstrap'])
   }
 
   $scope.submit = function() {
-    //setDateForRESTCall();
-    console.log($scope.email);
     if (!$scope.email._id) {
       $scope.email.$save(function() {});
     } else {
       $scope.email.$update(function(){});
     }
     AlertService.setSuccess({msg: $scope.email.subject + ' has been updated successfully.'})
-    //window.location = "/#/emails"
-  }
-  $scope.today = function() {
-    $scope.email.startDate = new Date();
-  };
-  $scope.today();
-
-  $scope.clear = function() {
-    $scope.email.endDate = null;
-  };
-
-  $scope.inlineOptions = {
-    customClass: getDayClass,
-    minDate: new Date(),
-    showWeeks: true
-  };
-
-  $scope.dateOptions = {
-    dateDisabled: disabled,
-    formatYear: 'yy',
-    maxDate: new Date(2020, 5, 22),
-    minDate: new Date(),
-    startingDay: 1
-  };
-
-  // Disable weekend selection
-  function disabled(data) {
-    var date = data.date,
-      mode = data.mode;
-    return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    window.location = "/#/emails"
   }
 
-  $scope.toggleMin = function() {
-    $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
-    $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
-  };
-
-  $scope.toggleMin();
-
-  $scope.open1 = function() {
-    $scope.popup1.opened = true;
-  };
-
-  $scope.open2 = function() {
-    $scope.popup2.opened = true;
-  };
-
-  $scope.setDate = function(year, month, day) {
-    $scope.dt = new Date(year, month, day);
-  };
-
-  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-  $scope.format = $scope.formats[0];
-  $scope.altInputFormats = ['M!/d!/yyyy'];
-
-  $scope.popup1 = {
-    opened: false
-  };
-
-  $scope.popup2 = {
-    opened: false
-  };
-
-  var tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  var afterTomorrow = new Date();
-  afterTomorrow.setDate(tomorrow.getDate() + 1);
-  $scope.events = [
-    {
-      date: tomorrow,
-      status: 'full'
-    },
-    {
-      date: afterTomorrow,
-      status: 'partially'
+  $scope.$watch('email.date.startDate', function(niu) {
+    if(niu) {
+      $scope.endDateOptions.minDate = niu
     }
-  ];
-
-  function getDayClass(data) {
-    var date = data.date,
-      mode = data.mode;
-    if (mode === 'day') {
-      var dayToCheck = new Date(date).setHours(0,0,0,0);
-
-      for (var i = 0; i < $scope.events.length; i++) {
-        var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
-
-        if (dayToCheck === currentDay) {
-          return $scope.events[i].status;
-        }
-      }
+  });
+  $scope.$watch('email.date.endDate', function(niu) {
+    if(niu) {
+      $scope.startDateOptions.maxDate = niu
     }
+  });
 
-    return '';
-  }
 
 });

@@ -72,14 +72,15 @@ function handleError(res, reason, message, code) {
       }
       email.subject = updatedEmail.subject;
       email.body = updatedEmail.body;
-      email.date.startDate = updatedEmail.startDate;
-      email.date.endDate = updatedEmail.endDate;
+      email.date.startDate = updatedEmail.date.startDate;
+      email.date.endDate = updatedEmail.date.endDate;
 
 
 
       email.save(function(err){
         if (err) {
           handleError(res, err.message, err);
+          console.log(err);
         }
         res.status(200).json(email);
       });

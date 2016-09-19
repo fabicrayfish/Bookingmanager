@@ -36,4 +36,8 @@ angular.module('emails', ['ngRoute'])
     window.location = location;
   };
 
+  $scope.newEmail = function() {
+    window.location = "/#/email"
+  }
+
 });

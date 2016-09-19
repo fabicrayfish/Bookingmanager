@@ -1,7 +1,7 @@
 angular.module('list', ['ngRoute'])
 
 .config(function($routeProvider) {
-  $routeProvider.when('/list', {
+  $routeProvider.when('/festivals', {
       templateUrl : 'pages/list/search.html',
       controller : 'FestivalListCtrl'
     });

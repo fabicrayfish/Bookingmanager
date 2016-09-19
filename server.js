@@ -62,57 +62,66 @@ var Emails = require('./app/models/email-model.js')
 app.get('/api/test', function (req, res){
   Festival.find({ "dates.deadline" : { $gte: moment().format(), $lt: moment().add(60, 'days').calendar() }}, function(err, festivals){
     festivals.forEach(function(festival){
-      var festivalDeadLine = moment(festival.dates[0].deadline);
-      Emails.findOne({"date.startDate": {$lt: festivalDeadLine}, "date.endDate": {$gte: festivalDeadLine} }, {}, { sort: { 'date.endDate' : -1 } }, function(err, emailTemplate){
-        var body = emailTemplate.body.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
-        var subject = emailTemplate.subject.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
+      festival.dates.forEach(function(date){
+        if (date.status != "versendet" && date.contactType == "email") {
+          var festivalDeadLine = moment(date.deadline);
+          Emails.findOne({"date.startDate": {$lt: festivalDeadLine}, "date.endDate": {$gte: festivalDeadLine} }, {}, { sort: { 'date.endDate' : -1 } }, function(err, emailTemplate){
+            var body = emailTemplate.body.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
+            var subject = emailTemplate.subject.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
 
-        var mailOptions = {
-            from: '"Stereo Satellite Booking" <booking@stereo-satellite.de>', // sender address
-            to: 'fabi.fink@gmail.com', // list of receivers
-            subject: subject, // Subject line
-            text: body // plaintext body
-        };
+            var mailOptions = {
+                from: '"Stereo Satellite Booking" <booking@stereo-satellite.de>', // sender address
+                to: 'fabi.fink@gmail.com', // list of receivers
+                subject: subject, // Subject line
+                text: body // plaintext body
+            };
 
-        // send mail with defined transport object
-        transporter.sendMail(mailOptions, function(err, info){
-            if(err){
-                console.log(err);
-            }
+            // send mail with defined transport object
+            transporter.sendMail(mailOptions, function(err, info){
+                if(err){
+                    console.log(err);
+                }
 
-            console.log(info);
-        });
+                console.log(info);
+            });
+          });
+        }
       });
 
     });
     res.json({"status": "success"});
   });
+
 });
 
 app.get('/api/testmail', function(req, res){
   var j = schedule.scheduleJob('20 * * * * *', function(){
     Festival.find({ "dates.deadline" : { $gte: moment().format(), $lt: moment().add(60, 'days').calendar() }}, function(err, festivals){
       festivals.forEach(function(festival){
-        var festivalDeadLine = moment(festival.dates[0].deadline);
-        Emails.findOne({"date.startDate": {$lt: festivalDeadLine}, "date.endDate": {$gte: festivalDeadLine} }, {}, { sort: { 'date.endDate' : -1 } }, function(err, emailTemplate){
-          var body = emailTemplate.body.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
-          var subject = emailTemplate.subject.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
+        festival.dates.forEach(function(date){
+          if (date.status != "versendet") {
+            var festivalDeadLine = moment(date.deadline);
+            Emails.findOne({"date.startDate": {$lt: festivalDeadLine}, "date.endDate": {$gte: festivalDeadLine} }, {}, { sort: { 'date.endDate' : -1 } }, function(err, emailTemplate){
+              var body = emailTemplate.body.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
+              var subject = emailTemplate.subject.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
 
-          var mailOptions = {
-              from: '"Stereo Satellite Booking" <booking@stereo-satellite.de>', // sender address
-              to: 'fabi.fink@gmail.com', // list of receivers
-              subject: subject, // Subject line
-              text: body // plaintext body
-          };
+              var mailOptions = {
+                  from: '"Stereo Satellite Booking" <booking@stereo-satellite.de>', // sender address
+                  to: 'fabi.fink@gmail.com', // list of receivers
+                  subject: subject, // Subject line
+                  text: body // plaintext body
+              };
 
-          // send mail with defined transport object
-          transporter.sendMail(mailOptions, function(err, info){
-              if(err){
-                  console.log(err);
-              }
+              // send mail with defined transport object
+              transporter.sendMail(mailOptions, function(err, info){
+                  if(err){
+                      console.log(err);
+                  }
 
-              console.log(info);
-          });
+                  console.log(info);
+              });
+            });
+          }
         });
 
       });

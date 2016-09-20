@@ -1,8 +1,8 @@
-var app = angular.module('BookingManager', ['ngRoute', 'ngTouch', 'ngAnimate', 'ngResource', 'ngStorage', 'xeditable', 'angularUtils.directives.dirPagination', 'BookingManager.services', 'festival', 'list', 'login', 'emails', 'email']);
+var app = angular.module('BookingManager', ['ngRoute', 'ngTouch', 'ngAnimate', 'ngResource', 'ngStorage', 'xeditable', 'angularUtils.directives.dirPagination', 'BookingManager.services', 'festival', 'list', 'login', 'emails', 'email', 'emaillog']);
 
 app.config(function($locationProvider, $routeProvider, $httpProvider) {
   $httpProvider.interceptors.push('authenticationInterceptor');
-  $routeProvider.otherwise({redirectTo: '/list'});
+  $routeProvider.otherwise({redirectTo: '/festivals'});
 });
 
 app.factory('authenticationInterceptor', function($q, $location, $localStorage){
@@ -74,6 +74,9 @@ angular.module('BookingManager.services', [])
         method: 'DELETE'
       }
     });
+  })
+  .factory('emailsLogEntry', function($resource) {
+    return $resource('./api/emailslog/:id', { id: '@_id' }, {});
   })
   .factory('login', function($resource){
     return $resource('./api/authenticate',{}, {

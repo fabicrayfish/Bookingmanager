@@ -46,3 +46,18 @@ div#map_canvas {
     }
   }
 }
+
+.email-template {
+  border: 1px solid grey;
+  border-radius: 3px;
+  box-shadow: 5px 5px 5px grey;
+  padding: 30px 30px 30px 30px;
+
+  .heading {
+    padding: 0 0 10px 0;
+    border-bottom: 1px solid grey;
+  }
+  .body {
+    padding: 10px 0 0 0;
+  }
+}

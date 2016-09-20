@@ -24,6 +24,7 @@ module.exports = mongoose.model('Festival', new Schema({
     deadline: Date,
     contactType: String,
     status: String,
-    response: String
+    response: String,
+    emailLogID: String
   }]
 }));

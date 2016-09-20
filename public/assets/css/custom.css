@@ -33,3 +33,16 @@ div#map_canvas {
       text-decoration: none; }
       .navbar-black ul li a :hover {
         background-color: #111; }
+
+.email-template {
+  border: 1px solid grey;
+  border-radius: 3px;
+  box-shadow: 5px 5px 5px grey;
+  padding: 30px 30px 30px 30px; }
+  .email-template .heading {
+    padding: 0 0 10px 0;
+    border-bottom: 1px solid grey; }
+  .email-template .body {
+    padding: 10px 0 0 0; }
+
+/*# sourceMappingURL=custom.css.map */

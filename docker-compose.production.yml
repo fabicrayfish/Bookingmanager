@@ -1,0 +1,13 @@
+mongo:
+  image: mongo
+  ports:
+    - "27017:27017"
+web:
+  build: fabisappzoo/bookingmanager
+  command: "npm start"
+  links:
+    - mongo
+  ports:
+    - "8888:8888"
+  volumes:
+    - .:/usr/src/app

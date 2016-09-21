@@ -1,0 +1,12 @@
+<div ng-controller="EmailLogCtrl">
+    <div class="container email-template m-t-30">
+      <div class="heading">
+        <p><b>Stereo Satellite Booking</b><br>
+        To: {{emailLog.recipient}}<br>
+        {{emailLog.subject}}</p>
+      </div>
+      <div class="body">
+        <pre>{{emailLog.body}}</pre>
+      </div>
+    </div>
+</div>

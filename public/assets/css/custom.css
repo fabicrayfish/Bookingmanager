@@ -12,27 +12,38 @@ div#map_canvas {
   margin: 0 0 20px 0; }
 
 .m-b-30 {
-  margin: 0 0 30px 0; }
+  margin-bottom: 30px; }
+
+.m-t-30 {
+  margin-top: 30px; }
 
 .m-l-8 {
   margin: 0 0 0 8px; }
 
-.navbar-black ul {
-  list-style-type: none;
-  margin: 0 0 30px 0;
-  padding: 0 15% 0 0;
-  overflow: hidden;
+.navbar-black {
+  height: 60px;
   background-color: #333; }
-  .navbar-black ul li {
-    float: right; }
-    .navbar-black ul li a {
-      display: block;
-      color: white;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none; }
-      .navbar-black ul li a :hover {
-        background-color: #111; }
+  .navbar-black .navbar-image {
+    float: left;
+    height: 100%;
+    padding: 10px 10px 10px 15%; }
+    .navbar-black .navbar-image img {
+      height: 100%; }
+  .navbar-black ul {
+    list-style-type: none;
+    margin: 0 0 30px 0;
+    padding: 0 15% 0 0;
+    overflow: hidden; }
+    .navbar-black ul li {
+      float: right; }
+      .navbar-black ul li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 20px 16px 20px;
+        text-decoration: none; }
+        .navbar-black ul li a :hover {
+          background-color: #111; }
 
 .email-template {
   border: 1px solid grey;
@@ -44,5 +55,3 @@ div#map_canvas {
     border-bottom: 1px solid grey; }
   .email-template .body {
     padding: 10px 0 0 0; }
-
-/*# sourceMappingURL=custom.css.map */

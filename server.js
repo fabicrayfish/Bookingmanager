@@ -4,16 +4,14 @@ var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
 var mongoose = require("mongoose");
 var ObjectID = mongodb.ObjectID;
-var nodemailer = require("nodemailer");
-var schedule = require('node-schedule');
+
 var moment = require('moment');
 
 var jwt = require("jsonwebtoken");
 var config = require("./config.js");
 var User = require("./app/models/user.js");
 
-// Transporter object for E-mail (Cronjob)
-var transporter = nodemailer.createTransport('smtps://admin%40alaskapirate.de:crayfish2013@smtp.strato.de');
+
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
@@ -54,73 +52,6 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error" : message});
 }
 
-// Testmail
-
-var Festival = require('./app/models/festival-model.js');
-var Emails = require('./app/models/email-model.js');
-var EmailLog = require('./app/models/email-log-model.js');
-
-app.get('/api/test', function (req, res){
-  var logOfSentEmails = [];
-  Festival.find({ "dates.deadline" : { $gte: moment().format(), $lt: moment().add(60, 'days').calendar() }}, function(err, festivals){
-    festivals.forEach(function(festival){
-      festival.dates.forEach(function(date){
-        if (date.status != "versendet" && date.contactType == "email" && typeof festival.email != "undefined") {
-          var festivalDeadLine = moment(date.deadline);
-          Emails.findOne({"date.startDate": {$lt: festivalDeadLine}, "date.endDate": {$gte: festivalDeadLine} }, {}, { sort: { 'date.endDate' : -1 } }, function(err, emailTemplate){
-            var body = emailTemplate.body.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
-            var subject = emailTemplate.subject.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
-            var email = String(festival.email);
-
-            var mailOptions = {
-                from: '"Stereo Satellite Booking" <booking@stereo-satellite.de>', // sender address
-                to: 'fabi.fink@gmail.com', // list of receivers
-                subject: subject, // Subject line
-                text: body // plaintext body
-            };
-
-            // send mail with defined transport object
-            transporter.sendMail(mailOptions, function(err, info){
-                if(err){
-                    console.log(err);
-                } else {
-                  var logEntry = new EmailLog({
-                    "recipient": email,
-                    "timestamp": moment(),
-                    "subject": subject,
-                    "body": body
-                  });
-                  logEntry.save(function(err, log){
-                    date.status = "versendet";
-                    date.emailLogID = log.id;
-                    logOfSentEmails.push(log);
-                    festival.save(function(err, f){});
-                  });
-                }
-            });
-          });
-        }
-      });
-
-    });
-    res.json({
-      "status": "success",
-      "logs": logOfSentEmails
-    });
-  });
-
-});
-
-app.get('/api/testmail', function(req, res){
-  var j = schedule.scheduleJob('20 * * * * *', function(){
-
-  });
-  res.json({
-    success: true,
-    message: 'Cronjob scheduled'
-  });
-});
-
 // User Authentication
 
 app.post('/api/authenticate', function(req, res){
@@ -158,6 +89,9 @@ app.post('/api/authenticate', function(req, res){
 
 });
 
+var EmailCronJob = require("./app/functions/festivalBooking.js");
+var cronJob = new EmailCronJob('http://localhost:5000');
+cronJob.start();
 // Router to verify user identity
 
 function checkToken(req, res, next){
@@ -188,9 +122,11 @@ var festivals = require("./app/endpoints/festivals.js");
 var emails = require("./app/endpoints/emails.js");
 var emailsLog = require("./app/endpoints/emailsLog.js");
 
+
 app.use('/api', checkToken, festivals);
 app.use('/api', checkToken, emails);
 app.use('/api', checkToken, emailsLog);
+
 
 // Angular Routes
 

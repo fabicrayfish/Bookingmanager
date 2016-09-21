@@ -15,7 +15,11 @@ div#map_canvas {
 }
 
 .m-b-30 {
-  margin: 0 0 30px 0;
+  margin-bottom: 30px;
+}
+
+.m-t-30 {
+  margin-top: 30px;
 }
 
 .m-l-8 {
@@ -23,12 +27,21 @@ div#map_canvas {
 }
 
 .navbar-black {
+  height: 60px;
+  background-color: #333;
+  .navbar-image {
+    float: left;
+    height: 100%;
+    padding: 10px 10px 10px 15%;
+    img {
+      height: 100%
+    }
+  }
   ul {
     list-style-type: none;
     margin: 0 0 30px 0;
     padding: 0 15% 0 0;
     overflow: hidden;
-    background-color: #333;
 
     li {
       float: right;
@@ -37,7 +50,7 @@ div#map_canvas {
         display: block;
         color: white;
         text-align: center;
-        padding: 14px 16px;
+        padding: 20px 16px 20px;
         text-decoration: none;
         :hover{
           background-color: #111;

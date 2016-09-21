@@ -13,12 +13,45 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 0
 		},
+	"\/app\/endpoints\/emailsLog.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/app\/endpoints\/emailsLog.js",
+		"outputAbbreviatedPath": "\/min\/emailsLog-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 0
+		},
 	"\/app\/endpoints\/festivals.js": {
 		"fileType": 64,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/app\/endpoints\/festivals.js",
 		"outputAbbreviatedPath": "\/min\/festivals-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 0
+		},
+	"\/app\/functions\/festivalBooking.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/app\/functions\/festivalBooking.js",
+		"outputAbbreviatedPath": "\/min\/festivalBooking-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 0
+		},
+	"\/app\/models\/email-log-model.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/app\/models\/email-log-model.js",
+		"outputAbbreviatedPath": "\/min\/email-log-model-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
@@ -329,6 +362,26 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/public\/pages\/email\/email.js",
 		"outputAbbreviatedPath": "\/min\/email-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 0
+		},
+	"\/public\/pages\/emailLog\/emailLog.html": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/public\/pages\/emailLog\/emailLog.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/public\/pages\/emailLog\/emailLog.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/public\/pages\/emailLog\/emailLog.js",
+		"outputAbbreviatedPath": "\/min\/emailLog-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,

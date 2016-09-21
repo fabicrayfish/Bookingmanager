@@ -1,5 +1,6 @@
 
 <div class="container">
+  <h1 class="text-center m-t-30 m-b-30">Festivals</h1>
   <div class="alert alert-success alert-dismissible" role="alert" ng-show="alertMessage"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{alertMessage.msg}}</div>
   <div class="row m-y-30">
     <div class="col-sm-8 col-sm-offset-2">
@@ -28,6 +29,7 @@
       <td>{{festival.address.distance}}</td>
     </tr>
   </table>
+  <button class="btn btn-primary" ng-click="newFestival()">new Festival</button>
   <div class="col-sm-12 text-center">
   <dir-pagination-controls
      max-size="5"

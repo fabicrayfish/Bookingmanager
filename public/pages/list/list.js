@@ -36,4 +36,8 @@ angular.module('list', ['ngRoute'])
     window.location = location;
   };
 
+  $scope.newFestival = function() {
+    window.location = "/#/festival"
+  }
+
 });

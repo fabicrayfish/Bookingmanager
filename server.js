@@ -34,7 +34,7 @@ var db = mongoose.connection;
 
 db.on('error', console.error);
 
-var mongodbURI = 'mongodb://localhost:27017/';
+var mongodbURI = 'mongodb://mongo:27017/test';
 
 mongoose.connect(mongodbURI);
 console.log("Database connection ready.");
@@ -56,6 +56,7 @@ function handleError(res, reason, message, code) {
 
 app.post('/api/authenticate', function(req, res){
   User.find({}, function(err, users){
+    console.log(err);
     console.log(users);
   });
   User.findOne({

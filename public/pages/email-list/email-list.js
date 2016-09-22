@@ -14,7 +14,7 @@ angular.module('emails', ['ngRoute'])
     $timeout(function () {$scope.alertMessage = "";}, 3000);
     AlertService.reset();
   }
-
+  
   $scope.emails = emailsEntry.query();
   $scope.currentPage = 1; // keeps track of the current page
   $scope.pageSize = 5; // holds the number of items per page

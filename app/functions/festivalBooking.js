@@ -17,9 +17,7 @@ var cronJob;
 
 var m = EmailCronJob.prototype;
 
-function EmailCronJob(url) {
-    this.fullUrl = url;
-}
+function EmailCronJob() {};
 
 m.start = function () {
   cronJob = schedule.scheduleJob('20 * * * * *', function(){
@@ -63,7 +61,7 @@ m.sendReportEmail = function() {
   var subject = 'AP Booking Manager - Reporting of ' + moment().format("DD-MM-YYYY");
   var body = '<p>Hi, </p><p>Es wurden wieder einmal Emails verschickt. An folgende Empfänger wurde eine Email versandt: </p>'
   logOfSentEmails.forEach(function(email){
-    body = body.concat('<a href="' + this.fullUrl + '/#/emaillog/' + email.id + '">' + email.recipient + '</a></br>');
+    body = body.concat('<a href="' + process.env.ENV_URL + '/#/emaillog/' + email.id + '">' + email.recipient + '</a></br>');
   });
 
   m.sendEmailAsHTML(sender, recipient, subject, body, function(err, info){});

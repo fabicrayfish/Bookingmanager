@@ -7,6 +7,8 @@ mongo:
 web:
   build: .
   command: "npm start"
+  environment:
+    - ENV_URL=http://localhost/
   links:
     - mongo
   ports:

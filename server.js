@@ -28,7 +28,6 @@ app.options('*', function(req, res) {
     res.send(200);
 });
 
-
 var db = mongoose.connection;
 // Website you wish to allow to connect
 
@@ -39,7 +38,7 @@ var mongodbURI = 'mongodb://mongo:27017/test';
 mongoose.connect(mongodbURI);
 console.log("Database connection ready.");
 
-var server = app.listen(process.env.PORT || 80, function() {
+var server = app.listen(80, function() {
   var port = server.address().port;
   console.log("Server now running on port: ", port);
 });
@@ -89,7 +88,7 @@ app.post('/api/authenticate', function(req, res){
 });
 
 var EmailCronJob = require("./app/functions/festivalBooking.js");
-var cronJob = new EmailCronJob('http://localhost:5000');
+var cronJob = new EmailCronJob();
 cronJob.start();
 // Router to verify user identity
 

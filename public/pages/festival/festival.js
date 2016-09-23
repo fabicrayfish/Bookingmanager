@@ -25,6 +25,7 @@ angular.module('festival', ['ngRoute'])
         });
       } else {
         $scope.festivalEntry = new festivalEntry;
+        $scope.festivalEntry.dates = [];
       }
     }
 
@@ -115,7 +116,7 @@ angular.module('festival', ['ngRoute'])
       };
 
       var distance = ""
-      
+
       directionsService.route(request, function(result, status) {
         if (status == 'OK') {
           distance = result["routes"][0]["legs"][0]["distance"]["text"];

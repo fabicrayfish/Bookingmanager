@@ -3,6 +3,7 @@ var path = require("path");
 var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
 var mongoose = require("mongoose");
+var md5 = require('md5');
 var ObjectID = mongodb.ObjectID;
 
 var moment = require('moment');
@@ -64,7 +65,7 @@ app.post('/api/authenticate', function(req, res){
     if(!user){
       res.json({success: false, message: "Authentication failed, no user with this name available"});
     } else {
-      if(user.password != req.body.password){
+      if(user.password != md5(req.body.password)){
         res.json({success: false, message: "Authentication failed, password is incorrect."});
       } else {
 

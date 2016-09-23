@@ -10,6 +10,6 @@ web:
   links:
     - mongo
   ports:
-    - "8888:8888"
+    - "80:80"
   volumes:
     - .:/usr/src/app

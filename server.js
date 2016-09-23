@@ -39,7 +39,7 @@ var mongodbURI = 'mongodb://mongo:27017/test';
 mongoose.connect(mongodbURI);
 console.log("Database connection ready.");
 
-var server = app.listen(process.env.PORT || 8888, function() {
+var server = app.listen(process.env.PORT || 80, function() {
   var port = server.address().port;
   console.log("Server now running on port: ", port);
 });
@@ -55,10 +55,6 @@ function handleError(res, reason, message, code) {
 // User Authentication
 
 app.post('/api/authenticate', function(req, res){
-  User.find({}, function(err, users){
-    console.log(err);
-    console.log(users);
-  });
   User.findOne({
     name: req.body.name
   }, function(err, user){
@@ -66,7 +62,6 @@ app.post('/api/authenticate', function(req, res){
       handleError(res, err.message, err);
     }
 
-    console.log("User: ", user);
     if(!user){
       res.json({success: false, message: "Authentication failed, no user with this name available"});
     } else {

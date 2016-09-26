@@ -1,0 +1,21 @@
+version: '2'
+services:
+  mongo:
+    image: mongo
+    cpu_shares: 100
+    mem_limit: 300000000
+    ports:
+      - "27017:27017"
+    volumes:
+      - elasticbeanstalk-us-east-1-308567766810:/data/db
+  web:
+    image: fabisappzoo/bookingmanager
+    environment:
+      - ENV_URL=http://52.89.21.229/
+    cpu_shares: 100
+    mem_limit: 300000000
+    command: "npm start"
+    links:
+      - mongo
+    ports:
+      - "80:80"

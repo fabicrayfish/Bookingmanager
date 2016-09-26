@@ -7,7 +7,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - elasticbeanstalk-us-east-1-308567766810:/data/db
+      - /mongo/db:/data/db
   web:
     image: fabisappzoo/bookingmanager
     environment:

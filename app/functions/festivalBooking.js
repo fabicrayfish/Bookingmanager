@@ -21,6 +21,7 @@ function EmailCronJob() {};
 
 m.start = function () {
   cronJob = schedule.scheduleJob('20 * * * * *', function(){
+    console.log("cronjob runs...");
     emailCount = 0;
     logOfSentEmails = [];
     m.datesOfFestivalThatAreApplicable(function(date, festival){
@@ -89,19 +90,25 @@ m.getEmailTemplateForDate = function (date, callback) {
 }
 
 m.sendEmailForFestival = function (email, festival, callback){
-  var body = email.body.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
-  var subject = email.subject.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
-  var email = String(festival.email);
-  var sender = '"Stereo Satellite Booking" <booking@stereo-satellite.de>';
-  var recipient = 'fabi.fink@gmail.com';
+  if (email) {
+    var body = email.body.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
+    var subject = email.subject.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
+    var email = String(festival.email);
+    var sender = '"Stereo Satellite Booking" <booking@stereo-satellite.de>';
+    var recipient = 'fabi.fink@gmail.com';
 
-  m.sendEmailAsText(sender, recipient, subject, body, function(err, info){
-    if(err){
-      console.log(err);
-    } else {
-      m.createNewEmailLog(email, subject, body, callback);
-    }
-  });
+    m.sendEmailAsText(sender, recipient, subject, body, function(err, info){
+      if(err){
+        console.log(err);
+      } else {
+        m.createNewEmailLog(email, subject, body, callback);
+      }
+    });
+  } else {
+    console.log("no email template found.");
+    emailCount -= 1;
+  }
+
 }
 
 m.sendEmailAsHTML = function (sender, recipient, subject, body, callback) {

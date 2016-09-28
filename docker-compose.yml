@@ -11,8 +11,8 @@ web:
     - ENV_URL=http://localhost
     - ENV_PORT=80
     - ENV_MONGO_URI=mongodb://mongo/test
-    - CRON_TIMER=20 * * * * *
-    - MAIL_REPORT_RECIPIENT=booking@stereo-satellite.de
+    - CRON_TIMER=30 * * * * *
+    - MAIL_REPORT_RECIPIENT=fabi@alaskapirate.de
   links:
     - mongo
   ports:

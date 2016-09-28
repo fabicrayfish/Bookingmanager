@@ -23,7 +23,7 @@ function EmailCronJob() {};
 m.start = function () {
   var cronjobTimer = process.env.CRON_TIMER || '20 * * * * *';
   cronJob = schedule.scheduleJob(cronjobTimer, function(){
-    console.log("cronjob runs...");
+    console.log("cronjob runs at ", moment().format());
     emailCount = 0;
     logOfSentEmails = [];
     logOfManualFestivals = [];
@@ -38,6 +38,7 @@ m.start = function () {
     })
   });
   console.log("cronjob scheduled, timer set ist: ", cronjobTimer);
+  console.log("system time: ", moment().format());
 };
 
 m.datesOfFestivalThatAreApplicable = function(callback){
@@ -85,7 +86,7 @@ m.sendReportEmail = function() {
     });
   }
 
-
+  console.log("Send report Email to:", recipient);
   m.sendEmailAsHTML(sender, recipient, subject, body, function(err, info){});
 }
 

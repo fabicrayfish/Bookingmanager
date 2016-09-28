@@ -3,7 +3,8 @@
   <h1 class="text-center m-t-30 m-b-30">Email Templates</h1>
   <div class="alert alert-success alert-dismissible" role="alert" ng-show="alertMessage"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{alertMessage.msg}}</div>
   <div class="row m-y-30">
-    <div class="col-sm-8 col-sm-offset-2">
+    <div class="col-sm-2"><button class="btn btn-primary" ng-click="newEmail()"><i class="fa fa-plus" aria-hidden="true"></i> New Email</button></div>
+    <div class="col-sm-8 ">
       <div class="input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
         <input type="text" class="form-control" ng-model="search">
@@ -23,13 +24,12 @@
         <span class="glyphicon sort-icon" ng-show="sortKey=='validUntil'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
       </th>
     </tr>
-    <tr dir-paginate="email in emails | orderBy:sortKey:reverse | filter: search | itemsPerPage:5" ng-click="redirect(email)">
+    <tr dir-paginate="email in emails | orderBy:sortKey:reverse | filter: search | itemsPerPage:15" ng-click="redirect(email)">
       <td>{{email.subject}}</td>
       <td>{{email.date.startDate | date:'dd-MM-yyyy'}}</td>
       <td>{{email.date.endDate | date:'dd-MM-yyyy'}}</td>
     </tr>
   </table>
-  <button class="btn btn-primary" ng-click="newEmail()">new Email</button>
   <div class="col-sm-12 text-center">
   <dir-pagination-controls
      max-size="5"

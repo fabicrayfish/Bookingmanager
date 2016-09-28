@@ -34,12 +34,12 @@ var db = mongoose.connection;
 
 db.on('error', console.error);
 
-var mongodbURI = 'mongodb://mongo:27017/test';
+var mongodbURI = process.env.ENV_MONGO_URI || 'mongodb://localhost:27017/test';
 
 mongoose.connect(mongodbURI);
 console.log("Database connection ready.");
 
-var server = app.listen(80, function() {
+var server = app.listen(process.env.ENV_PORT || 8888, function() {
   var port = server.address().port;
   console.log("Server now running on port: ", port);
 });

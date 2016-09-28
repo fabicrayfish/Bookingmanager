@@ -12,7 +12,7 @@ angular.module('festival', ['ngRoute'])
     });
 })
 
-.controller('FestivalCtrl', function($scope, festivalEntry, $routeParams, AlertService){
+.controller('FestivalCtrl', function($scope, $window, festivalEntry, $routeParams, AlertService){
     var directionsService = new google.maps.DirectionsService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
     var rehearsalRoom = new google.maps.LatLng(49.994704, 8.669842);
@@ -165,7 +165,7 @@ angular.module('festival', ['ngRoute'])
       $scope.festivalEntry.dates.push({"date" : Date.now(),
             "deadline" : Date.now(),
             "contactType" : "email",
-            "status": "not sent"});
+            "status": "nicht versendet"});
     }
 
     $scope.removeRow = function (idx) {
@@ -179,9 +179,13 @@ angular.module('festival', ['ngRoute'])
 
     $scope.delete = function() {
       if ($scope.festivalEntry._id) {
-        $scope.festivalEntry.$delete(function() {});
-        AlertService.setSuccess({msg: $scope.festivalEntry.festivalName + ' has been deleted.'})
-        window.location = "/#/festivals"
+        var deleteFestival = $window.confirm('Are you absolutely sure you want to delete the Festival?');
+
+        if (deleteFestival) {
+          $scope.festivalEntry.$delete(function() {});
+          AlertService.setSuccess({msg: $scope.festivalEntry.festivalName + ' has been deleted.'})
+          window.location = "/#/festivals"
+        }
       }
     }
 

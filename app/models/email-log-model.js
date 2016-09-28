@@ -6,5 +6,6 @@ module.exports = mongoose.model('EmailLog', new Schema({
   recipient: String,
   timestamp: Date,
   subject: String,
-  body: String
+  body: String,
+  festival: {type: Schema.Types.ObjectId, ref: 'Festival'}
 }));

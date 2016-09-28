@@ -13,6 +13,7 @@ var EmailLog = require('../models/email-log-model.js');
 
 var emailCount;
 var logOfSentEmails;
+var logOfManualFestivals;
 var cronJob;
 
 var m = EmailCronJob.prototype;
@@ -20,10 +21,12 @@ var m = EmailCronJob.prototype;
 function EmailCronJob() {};
 
 m.start = function () {
-  cronJob = schedule.scheduleJob('20 * * * * *', function(){
+  var cronjobTimer = process.env.CRON_TIMER || '20 * * * * *';
+  cronJob = schedule.scheduleJob(cronjobTimer, function(){
     console.log("cronjob runs...");
     emailCount = 0;
     logOfSentEmails = [];
+    logOfManualFestivals = [];
     m.datesOfFestivalThatAreApplicable(function(date, festival){
         m.getEmailTemplateForDate(date, function(emailTemplate){
           m.sendEmailForFestival(emailTemplate, festival, function(logEntry){
@@ -34,7 +37,7 @@ m.start = function () {
       })
     })
   });
-  console.log("cronjob scheduled");
+  console.log("cronjob scheduled, timer set ist: ", cronjobTimer);
 };
 
 m.datesOfFestivalThatAreApplicable = function(callback){
@@ -44,9 +47,14 @@ m.datesOfFestivalThatAreApplicable = function(callback){
         if (m.shouldEmailBeSent(date, festival)) {
           emailCount += 1;
           callback(date, festival);
+        } else if (m.shouldFestivalBeContactedManually(date, festival)) {
+          logOfManualFestivals.push(festival);
         }
       });
     });
+    if(emailCount == 0 && logOfManualFestivals.length > 0) {
+      m.sendReportEmail();
+    }
   });
 }
 
@@ -57,13 +65,26 @@ m.checkIfAllEmailsSent = function () {
 }
 
 m.sendReportEmail = function() {
+  var envURL = process.env.ENV_URL || 'http://localhost:8888'
+
   var sender = '"Stereo Satellite Booking" <booking@stereo-satellite.de>';
-  var recipient = 'fabi.fink@gmail.com';
+  var recipient = process.env.MAIL_REPORT_RECIPIENT || 'fabi.fink@gmail.com';
   var subject = 'AP Booking Manager - Reporting of ' + moment().format("DD-MM-YYYY");
-  var body = '<p>Hi, </p><p>Es wurden wieder einmal Emails verschickt. An folgende Empfänger wurde eine Email versandt: </p>'
-  logOfSentEmails.forEach(function(email){
-    body = body.concat('<a href="' + process.env.ENV_URL + '/#/emaillog/' + email.id + '">' + email.recipient + '</a></br>');
-  });
+  var body = '<p>Hi, </p><p>Report für den ' +  moment().format("DD-MM-YYYY") + '</p>';
+  if (logOfSentEmails.length > 0) {
+    body = body.concat('<p><b>Versendete Emails</b></p>');
+    logOfSentEmails.forEach(function(emailLog){
+      body = body.concat('<a href="' + envURL + '/#/festival/' + emailLog.festival + '">' + emailLog.festivalName + '</a> (<a href="' + envURL + '/#/emaillog/' + emailLog.id + '"> Email </a>)</br>');
+    });
+  }
+
+  if (logOfManualFestivals.length > 0) {
+    body = body.concat('<p><b>Offene Festivals</b></p>');
+    logOfManualFestivals.forEach(function(festival){
+      body = body.concat('<a href="' + envURL + '/#/festival/' + festival._id + '">' + festival.festivalName + '</a></br>');
+    });
+  }
+
 
   m.sendEmailAsHTML(sender, recipient, subject, body, function(err, info){});
 }
@@ -71,6 +92,7 @@ m.sendReportEmail = function() {
 m.saveFestivalStatus = function (date, festival, logEntry, callback){
   date.status = "versendet";
   date.emailLogID = logEntry.id;
+  logEntry.festivalName = festival.festivalName;
   logOfSentEmails.push(logEntry);
   festival.save(function(err, f){
     emailCount -= 1;
@@ -82,6 +104,10 @@ m.shouldEmailBeSent = function(date, festival) {
   return (date.status != "versendet" && date.contactType == "email" && typeof festival.email != "undefined")
 }
 
+m.shouldFestivalBeContactedManually = function(date, festival) {
+  return (date.status != "versendet" && date.contactType != "email")
+}
+
 m.getEmailTemplateForDate = function (date, callback) {
   var festivalDeadLine = moment(date.deadline);
   Emails.findOne({"date.startDate": {$lt: festivalDeadLine}, "date.endDate": {$gte: festivalDeadLine} }, {}, { sort: { 'date.endDate' : -1 } }, function(err, emailTemplate){
@@ -91,17 +117,20 @@ m.getEmailTemplateForDate = function (date, callback) {
 
 m.sendEmailForFestival = function (email, festival, callback){
   if (email) {
-    var body = email.body.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
-    var subject = email.subject.replace(/%name%/g, festival.name).replace(/%festivalName%/g, festival.festivalName);
-    var email = String(festival.email);
+    var festivalName = festival.festivalName + ' Festival';
+    var contactName = festival.name ? festival.name : festivalName;
+
+    var body = email.body.replace(/%name%/g, contactName).replace(/%festivalName%/g, festivalName);
+    var subject = email.subject.replace(/%name%/g, contactName).replace(/%festivalName%/g, festivalName);
+
     var sender = '"Stereo Satellite Booking" <booking@stereo-satellite.de>';
-    var recipient = 'fabi.fink@gmail.com';
+    var recipient = String(festival.email);
 
     m.sendEmailAsText(sender, recipient, subject, body, function(err, info){
       if(err){
         console.log(err);
       } else {
-        m.createNewEmailLog(email, subject, body, callback);
+        m.createNewEmailLog(recipient, festival._id, subject, body, callback);
       }
     });
   } else {
@@ -140,12 +169,13 @@ m.sendEmail = function(mailOptions, callback) {
   });
 }
 
-m.createNewEmailLog = function(email, subject, body, callback) {
+m.createNewEmailLog = function(email, festivalID, subject, body, callback) {
   var logEntry = new EmailLog({
     "recipient": email,
     "timestamp": moment(),
     "subject": subject,
-    "body": body
+    "body": body,
+    "festival": festivalID
   });
   logEntry.save(function(err, log){
     callback(log);

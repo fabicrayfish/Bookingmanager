@@ -5,14 +5,13 @@ angular.module('emaillog', ['ngRoute', 'ngTouch', 'ngAnimate', 'ui.bootstrap'])
     .when('/emaillog/:id', {
       templateUrl : 'pages/emailLog/emailLog.html',
       controller : 'EmailLogCtrl'
-    })
+    });
 })
 
 .controller('EmailLogCtrl', function($scope, emailsLogEntry, $routeParams){
   var id = $routeParams.id;
-  var query = emailsLogEntry.get({ id: id })
-
-  query.$promise.then(function(log){
+  var emailQuery = emailsLogEntry.get({ id: id });
+  emailQuery.$promise.then(function(log){
     $scope.emailLog = log;
     $scope.body = $scope.emailLog.body.replace("\n", "</br>");
   });

@@ -11,7 +11,11 @@ services:
   web:
     image: fabisappzoo/bookingmanager
     environment:
-      - ENV_URL=http://52.89.21.229/
+      - ENV_URL=http://52.89.21.229
+      - ENV_PORT=80
+      - ENV_MONGO_URI=mongodb://mongo/test
+      - CRON_TIMER=* 30 8 * * *
+      - MAIL_REPORT_RECIPIENT=booking@stereo-satellite.de
     cpu_shares: 100
     mem_limit: 300000000
     command: "npm start"

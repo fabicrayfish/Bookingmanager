@@ -12,7 +12,7 @@ angular.module('festival', ['ngRoute'])
     });
 })
 
-.controller('FestivalCtrl', function($scope, $window, festivalEntry, $routeParams, AlertService){
+.controller('FestivalCtrl', function($scope, $window, festivalEntry, $routeParams, AlertService, $uibModal){
     var directionsService = new google.maps.DirectionsService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
     var rehearsalRoom = new google.maps.LatLng(49.994704, 8.669842);
@@ -200,5 +200,36 @@ angular.module('festival', ['ngRoute'])
       window.location = "/#/festivals"
     }
 
+    $scope.open = function (template) {
+      console.log("open");
+      var modalInstance = $uibModal.open({
+        animation: true,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: 'myModalContent.html',
+        controller: 'ModalInstanceCtrl',
+        backdrop: 'static',
+        keyboard: 'false',
+        controllerAs: '$ctrl',
+        size: '',
+        resolve: {
+          template: function() {
+            return template;
+          }
+        }
+      });
+    };
+
+});
+
+
+// Controller of the Modal to edit or create a response.
+
+app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, template) {
+  $scope.template = template;
+
+  $scope.ok = function () {
+    $uibModalInstance.close();
+  };
 
 });

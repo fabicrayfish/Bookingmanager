@@ -101,28 +101,6 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 0
 		},
-	"\/Dockerfile.aws.json": {
-		"fileType": 524288,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/Dockerfile.aws.json",
-		"orderOutput": 0,
-		"outputAbbreviatedPath": "\/Dockerfile.aws-min.json",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1
-		},
-	"\/min\/app-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/min\/app-min.js",
-		"outputAbbreviatedPath": "\/min\/app-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 0
-		},
 	"\/min\/festival-min.js": {
 		"fileType": 64,
 		"ignore": 1,
@@ -235,6 +213,17 @@
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
+		},
+	"\/public\/assets\/img\/favicon.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 129406,
+		"inputAbbreviatedPath": "\/public\/assets\/img\/favicon.png",
+		"outputAbbreviatedPath": "\/public\/assets\/img\/favicon.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
 		},
 	"\/public\/assets\/js\/angular-daterangepicker.min.js": {
 		"fileType": 64,

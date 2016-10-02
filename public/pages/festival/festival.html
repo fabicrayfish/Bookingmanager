@@ -51,11 +51,12 @@
       <table class="table">
         <tr>
           <th class="col-sm-1">Delete</th>
-          <th class="col-sm-2">Datum</th>
-          <th class="col-sm-2">Bewerbungsfrist</th>
+          <th class="col-sm-1">Datum</th>
+          <th class="col-sm-1">Bewerbungsfrist</th>
           <th class="col-sm-1">Kontaktart</th>
           <th class="col-sm-1">Status</th>
           <th class="col-sm-1">Antwort</th>
+          <th class="col-sm-1">Template</th>
         </tr>
           <tr ng-repeat="festivalDate in festivalEntry.dates">
               <td><button type="button" class="btn btn-danger" ng-click="removeRow($index)"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button></td>
@@ -64,6 +65,7 @@
              <td><a href="#" editable-select="festivalDate.contactType" e-ng-options="s.text as s.text for s in contactTypes" e-single>{{ festivalDate.contactType || "email" }}</a></td>
              <td><a href="#" editable-select="festivalDate.status" e-ng-options="s.text as s.text for s in statusTypes" e-single>{{ festivalDate.status || "nicht versendet" }}</a></td>
              <td><a href="#" editable-select="festivalDate.response" e-ng-options="s.text as s.text for s in responseTypes" e-single>{{ festivalDate.response || "-" }}</a></td>
+             <td><button type="button" class="btn btn-default" ng-click="open(festivalEntry)"><i class="fa fa-envelope-o" aria-hidden="true"></i></button></td>
           </tr>
       </table>
       <div class="m-l-8">
@@ -119,4 +121,19 @@
       </div>
     </div>
   </form>
+  <script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">{{template.festivalName}}</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <ul>
+            <li>
+                {{template.name}}
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    </div>
+</script>
 </div>

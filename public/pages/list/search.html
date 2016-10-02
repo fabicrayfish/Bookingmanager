@@ -14,19 +14,31 @@
   </div>
   <table class="table table-hover" ng-controller="FestivalListCtrl">
     <tr>
-      <th class="col-sm-4" ng-click="sort('festivalName')">Festival
+      <th class="col-sm-2" ng-click="sort('festivalName')">Festival
         <span class="glyphicon sort-icon" ng-show="sortKey=='festivalName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
       </th>
-      <th class="col-sm-4" ng-click="sort('address.locality')">Stadt
+      <th class="col-sm-2" ng-click="sort('address.locality')">Stadt
         <span class="glyphicon sort-icon" ng-show="sortKey=='address.locality'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
       </th>
-      <th class="col-sm-4" ng-click="sort('address.distance')">Entfernung
+      <th class="col-sm-2" ng-click="sort('deadline')">Bewerbungsfrist
+        <span class="glyphicon sort-icon" ng-show="sortKey=='deadline'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      </th>
+      <th class="col-sm-2" ng-click="sort('contactType')">Bewerbungsart
+        <span class="glyphicon sort-icon" ng-show="sortKey=='contactType'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      </th>
+      <th class="col-sm-2" ng-click="sort('status')">Status
+        <span class="glyphicon sort-icon" ng-show="sortKey=='status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      </th>
+      <th class="col-sm-2" ng-click="sort('address.distance')">Entfernung
         <span class="glyphicon sort-icon" ng-show="sortKey=='address.distance'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
       </th>
     </tr>
     <tr dir-paginate="festival in festivals | orderBy:sortKey:reverse | filter: search | itemsPerPage:50" ng-click="redirect(festival)">
       <td>{{festival.festivalName}}</td>
       <td>{{festival.address.locality}}</td>
+      <td>{{festival.dates[festival.dates.length - 1].deadline | date:'dd-MM-yyyy'}}</td>
+      <td>{{festival.dates[festival.dates.length - 1].contactType}}</td>
+      <td>{{festival.dates[festival.dates.length - 1].status}}</td>
       <td>{{festival.address.distance}}</td>
     </tr>
   </table>

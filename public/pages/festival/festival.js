@@ -200,7 +200,7 @@ angular.module('festival', ['ngRoute'])
       window.location = "/#/festivals"
     }
 
-    $scope.open = function (template) {
+    $scope.open = function (template, date) {
       console.log("open");
       var modalInstance = $uibModal.open({
         animation: true,
@@ -215,6 +215,9 @@ angular.module('festival', ['ngRoute'])
         resolve: {
           template: function() {
             return template;
+          },
+          date: function() {
+            return date;
           }
         }
       });
@@ -225,11 +228,36 @@ angular.module('festival', ['ngRoute'])
 
 // Controller of the Modal to edit or create a response.
 
-app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, template) {
+app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, emailsEntry, $filter, template, date) {
+  var date = date;
   $scope.template = template;
+  $scope.subject = "";
+  $scope.body = "";
+  console.log(date);
+
+
+  var validEmailTemplate = function(emails, date) {
+    var possibleEmails = []
+    emails.forEach(function(email){
+      if(date.deadline < email.date.endDate && date.deadline > email.date.startDate ) {
+        possibleEmails.push(email);
+      }
+    });
+
+    var orderedEmails = $filter('orderBy')(possibleEmails, '-date.endDate');
+    var emailTemplate = orderedEmails[0];
+
+    $scope.subject = emailTemplate.subject;
+    $scope.body = emailTemplate.body;
+  }
+
+  var emails = emailsEntry.query().$promise.then(function(emails){
+    validEmailTemplate(emails, date);
+  });
 
   $scope.ok = function () {
     $uibModalInstance.close();
   };
+
 
 });

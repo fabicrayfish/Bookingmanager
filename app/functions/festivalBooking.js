@@ -42,10 +42,13 @@ m.start = function () {
 };
 
 m.datesOfFestivalThatAreApplicable = function(callback){
-  Festival.find({ "dates.deadline" : { $gte: moment().format(), $lt: moment().add(60, 'days').calendar() }}, function(err, festivals){
+  var notbefore = moment().format();
+  var notafter = moment().add(60, 'days').format();
+
+  Festival.find({ "dates.deadline" : { $gte: notbefore, $lt: notafter }}, function(err, festivals){
     festivals.forEach(function(festival){
       festival.dates.forEach(function(date){
-        if (m.shouldEmailBeSent(date, festival)) {
+        if (m.shouldEmailBeSent(date, festival, notbefore, notafter)) {
           emailCount += 1;
           callback(date, festival);
         } else if (m.shouldFestivalBeContactedManually(date, festival)) {
@@ -101,8 +104,10 @@ m.saveFestivalStatus = function (date, festival, logEntry, callback){
   });
 }
 
-m.shouldEmailBeSent = function(date, festival) {
-  return (date.status != "versendet" && date.contactType == "email" && typeof festival.email != "undefined")
+m.shouldEmailBeSent = function(date, festival, notbefore, notafter) {
+
+  var isDateInRange = date.deadline >= moment(notbefore).toDate() && date.deadline <= moment(notafter).toDate();
+  return (date.status != "versendet" && date.contactType == "email" && typeof festival.email != "undefined" && isDateInRange)
 }
 
 m.shouldFestivalBeContactedManually = function(date, festival) {

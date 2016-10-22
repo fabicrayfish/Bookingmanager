@@ -200,7 +200,7 @@ angular.module('festival', ['ngRoute'])
       window.location = "/#/festivals"
     }
 
-    $scope.open = function (template, date) {
+    $scope.open = function (festival, date) {
       console.log("open");
       var modalInstance = $uibModal.open({
         animation: true,
@@ -213,8 +213,8 @@ angular.module('festival', ['ngRoute'])
         controllerAs: '$ctrl',
         size: '',
         resolve: {
-          template: function() {
-            return template;
+          festival: function() {
+            return festival;
           },
           date: function() {
             return date;
@@ -228,9 +228,9 @@ angular.module('festival', ['ngRoute'])
 
 // Controller of the Modal to edit or create a response.
 
-app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, emailsEntry, $filter, template, date) {
+app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, emailsEntry, $filter, festival, date) {
   var date = date;
-  $scope.template = template;
+  var festival = festival;
   $scope.subject = "";
   $scope.body = "";
   console.log(date);
@@ -247,8 +247,17 @@ app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, emailsE
     var orderedEmails = $filter('orderBy')(possibleEmails, '-date.endDate');
     var emailTemplate = orderedEmails[0];
 
-    $scope.subject = emailTemplate.subject;
-    $scope.body = emailTemplate.body;
+    var festivalName = festival.festivalName;
+    var contactName = festival.name ? festival.name : festivalName;
+    var contactTeam = festivalName + ' Team';
+    if (festival.name) {
+      var formOfAddress = 'Hallo ' + festival.name + ', Liebes ' + contactTeam + ','
+    } else {
+      var formOfAddress = 'Liebes ' + contactTeam + ','
+    }
+
+    $scope.body = emailTemplate.body.replace(/%name%/g, contactName).replace(/%festivalName%/g, festivalName).replace(/%anrede%/g, formOfAddress);
+    $scope.subject = emailTemplate.subject.replace(/%name%/g, contactName).replace(/%festivalName%/g, festivalName);
   }
 
   var emails = emailsEntry.query().$promise.then(function(emails){

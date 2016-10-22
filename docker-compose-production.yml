@@ -3,7 +3,7 @@ services:
   mongo:
     image: mongo
     cpu_shares: 100
-    mem_limit: 300000000
+    mem_limit: 240000000
     ports:
       - "27017:27017"
     volumes:
@@ -17,7 +17,7 @@ services:
       - CRON_TIMER=* 30 8 * * *
       - MAIL_REPORT_RECIPIENT=booking@stereo-satellite.de
     cpu_shares: 100
-    mem_limit: 300000000
+    mem_limit: 240000000
     command: "npm start"
     links:
       - mongo

@@ -123,10 +123,16 @@
   </form>
   <script type="text/ng-template" id="myModalContent.html">
     <div class="modal-header">
-        <h3 class="modal-title" id="modal-title">{{subject}}</h3>
+        <h3 class="modal-title" id="modal-title">
+          {{subject}}
+          <div ng-if="!subject">Email not found.</div>
+      </h3>
     </div>
     <div class="modal-body" id="modal-body">
-      {{body}}
+      <textarea ng-if="body" name="body" id="" cols="77" rows="25">
+        {{body}}
+      </textarea>
+      <div ng-if="!body">No email is set for this festival.</div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>

@@ -118,10 +118,17 @@ m.getEmailTemplateForDate = function (date, callback) {
 
 m.sendEmailForFestival = function (email, festival, callback){
   if (email) {
-    var festivalName = festival.festivalName + ' Festival';
+    var festivalName = festival.festivalName;
     var contactName = festival.name ? festival.name : festivalName;
+    var contactTeam = festivalName + ' Team';
+    if (festival.name) {
+      var formOfAddress = 'Hallo ' + festival.name + ', Liebes ' + contactTeam + ','
+    } else {
+      var formOfAddress = 'Liebes ' + contactTeam + ','
+    }
 
-    var body = email.body.replace(/%name%/g, contactName).replace(/%festivalName%/g, festivalName);
+
+    var body = email.body.replace(/%name%/g, contactName).replace(/%festivalName%/g, festivalName).replace(/%anrede%/g, formOfAddress);
     var subject = email.subject.replace(/%name%/g, contactName).replace(/%festivalName%/g, festivalName);
 
     var sender = '"Stereo Satellite Booking" <booking@stereo-satellite.de>';

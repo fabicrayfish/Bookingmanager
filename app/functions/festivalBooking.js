@@ -122,9 +122,9 @@ m.sendEmailForFestival = function (email, festival, callback){
     var contactName = festival.name ? festival.name : festivalName;
     var contactTeam = festivalName + ' Team';
     if (festival.name) {
-      var formOfAddress = 'Hallo ' + festival.name + ', Liebes ' + contactTeam + ','
+      var formOfAddress = 'Hallo ' + festival.name + ', Liebes ' + contactTeam + ',';
     } else {
-      var formOfAddress = 'Liebes ' + contactTeam + ','
+      var formOfAddress = 'Liebes ' + contactTeam + ',';
     }
 
 

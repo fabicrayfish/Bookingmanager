@@ -16,6 +16,8 @@ services:
       - ENV_MONGO_URI=mongodb://mongo/test
       - CRON_TIMER=* 30 8 * * *
       - MAIL_REPORT_RECIPIENT=booking@stereo-satellite.de
+      - MAIL_BCC=fabi@alaskapirate.de
+      - DAYS_UNTIL_DEADLINE=42
     cpu_shares: 100
     mem_limit: 240000000
     command: "npm start"

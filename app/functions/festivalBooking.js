@@ -42,8 +42,10 @@ m.start = function () {
 };
 
 m.datesOfFestivalThatAreApplicable = function(callback){
+  var daysUntilDeadline = process.env.DAYS_UNTIL_DEADLINE || 42;
+
   var notbefore = moment().format();
-  var notafter = moment().add(60, 'days').format();
+  var notafter = moment().add(daysUntilDeadline, 'days').format();
 
   Festival.find({ "dates.deadline" : { $gte: notbefore, $lt: notafter }}, function(err, festivals){
     festivals.forEach(function(festival){
@@ -56,14 +58,12 @@ m.datesOfFestivalThatAreApplicable = function(callback){
         }
       });
     });
-    if(emailCount == 0 && logOfManualFestivals.length > 0) {
-      m.sendReportEmail();
-    }
   });
 }
 
 m.checkIfAllEmailsSent = function () {
-  if (emailCount == 0 && logOfSentEmails.length != 0) {
+  console.log("manual festival count: " + logOfManualFestivals.length);
+  if (emailCount == 0 && (logOfSentEmails.length != 0 || logOfManualFestivals.length > 0)) {
     m.sendReportEmail();
   }
 }
@@ -138,8 +138,9 @@ m.sendEmailForFestival = function (email, festival, callback){
 
     var sender = '"Stereo Satellite Booking" <booking@stereo-satellite.de>';
     var recipient = String(festival.email);
+    var bcc = process.env.MAIL_BCC || 'fabi@alaskapirate.de';
 
-    m.sendEmailAsText(sender, recipient, subject, body, function(err, info){
+    m.sendEmailAsText(sender, recipient, bcc, subject, body, function(err, info){
       if(err){
         console.log(err);
       } else {
@@ -164,10 +165,11 @@ m.sendEmailAsHTML = function (sender, recipient, subject, body, callback) {
   m.sendEmail(mailOptions, callback);
 }
 
-m.sendEmailAsText = function (sender, recipient, subject, body, callback) {
+m.sendEmailAsText = function (sender, recipient, bcc, subject, body, callback) {
   var mailOptions = {
       from: sender, // sender address
       to: recipient, // list of receivers
+      bcc: bcc,
       subject: subject, // Subject line
       text: body // plaintext body
   };

@@ -14,10 +14,12 @@ services:
       - ENV_URL=http://booking.alaskapirate.de
       - ENV_PORT=80
       - ENV_MONGO_URI=mongodb://mongo/test
-      - CRON_TIMER=* 30 8 * * *
-      - MAIL_REPORT_RECIPIENT=booking@stereo-satellite.de
+      - CRON_TIMER=30 * * * * *
+      - CRON_TIMER_OLD=* 30 8 * * *
+      - MAIL_SENDER="Alaska Pirate Booking" <booking@alaskapirate.de>
+      - MAIL_REPORT_RECIPIENT=fabi.fink@gmail.com
       - MAIL_BCC=fabi@alaskapirate.de
-      - DAYS_UNTIL_DEADLINE=42
+      - DAYS_UNTIL_DEADLINE=1
     cpu_shares: 100
     mem_limit: 240000000
     command: "npm start"

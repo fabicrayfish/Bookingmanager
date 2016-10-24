@@ -136,7 +136,7 @@ m.sendEmailForFestival = function (email, festival, callback){
     var body = email.body.replace(/%name%/g, contactName).replace(/%festivalName%/g, festivalName).replace(/%anrede%/g, formOfAddress);
     var subject = email.subject.replace(/%name%/g, contactName).replace(/%festivalName%/g, festivalName);
 
-    var sender = '"Stereo Satellite Booking" <booking@stereo-satellite.de>';
+    var sender = process.env.MAIL_SENDER || '"Stereo Satellite Booking" <booking@stereo-satellite.de>';
     var recipient = String(festival.email);
     var bcc = process.env.MAIL_BCC || 'fabi@alaskapirate.de';
 

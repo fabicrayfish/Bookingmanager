@@ -19,7 +19,7 @@ services:
       - MAIL_SENDER="Alaska Pirate Booking" <booking@alaskapirate.de>
       - MAIL_REPORT_RECIPIENT=fabi.fink@gmail.com
       - MAIL_BCC=fabi@alaskapirate.de
-      - DAYS_UNTIL_DEADLINE=1
+      - DAYS_UNTIL_DEADLINE=30
     cpu_shares: 100
     mem_limit: 240000000
     command: "npm start"

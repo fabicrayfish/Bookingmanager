@@ -140,16 +140,22 @@ m.sendEmailForFestival = function (email, festival, callback){
     var recipient = String(festival.email);
     var bcc = process.env.MAIL_BCC || 'fabi@alaskapirate.de';
 
-    m.sendEmailAsText(sender, recipient, bcc, subject, body, function(err, info){
-      if(err){
-        console.log(err);
-      } else {
-        m.createNewEmailLog(recipient, festival._id, subject, body, callback);
-      }
-    });
+    if (recipient) {
+      m.sendEmailAsText(sender, recipient, bcc, subject, body, function(err, info){
+        if(err){
+          console.log(err);
+        } else {
+          m.createNewEmailLog(recipient, festival._id, subject, body, callback);
+        }
+      });
+    } else {
+      emailCount -= 1;
+      m.checkIfAllEmailsSent();
+    }
   } else {
     console.log("no email template found.");
     emailCount -= 1;
+    m.checkIfAllEmailsSent();
   }
 
 }

@@ -14,7 +14,7 @@ services:
       - ENV_URL=http://booking.alaskapirate.de
       - ENV_PORT=80
       - ENV_MONGO_URI=mongodb://mongo/test
-      - CRON_TIMER=* 30 7 * * *
+      - CRON_TIMER=1 30 7 * * *
       - MAIL_SENDER="Alaska Pirate Booking" <booking@alaskapirate.de>
       - MAIL_REPORT_RECIPIENT=booking@stereo-satellite.de
       - MAIL_BCC=fabi@alaskapirate.de

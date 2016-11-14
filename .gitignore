@@ -1,3 +1,2 @@
-git rm -r -f node_modules
 git rm -r -f data
 git rm -r -f awscli-bundle

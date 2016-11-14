@@ -88,8 +88,7 @@ app.post('/api/authenticate', function(req, res){
 
 });
 
-var EmailCronJob = require("./app/functions/festivalBooking.js");
-var cronJob = new EmailCronJob();
+var cronJob = require("./app/functions/festivalBooking.js");
 cronJob.start();
 // Router to verify user identity
 

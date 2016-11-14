@@ -4,19 +4,22 @@
   "description": "An API to store Festival and club shows",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/.bin/mocha --reporter spec",
     "start": "node server.js"
   },
   "dependencies": {
     "body-parser": "^1.13.3",
+    "chai": "^3.5.0",
     "express": "^4.13.3",
-    "mongodb": "^2.1.6",
     "express-session": "^1.5.0",
-    "mongoose": "^4.5.7",
     "jsonwebtoken": "^7.1.7",
-    "nodemailer": "^2.5.0",
-    "node-schedule": "^1.1.1",
+    "md5": "*",
+    "mocha": "^3.1.2",
     "moment": "*",
-    "md5": "*"
+    "mongodb": "^2.1.6",
+    "mongoose": "^4.5.7",
+    "node-schedule": "^1.1.1",
+    "nodemailer": "^2.5.0",
+    "request": "^2.78.0"
   }
 }

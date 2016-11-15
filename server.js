@@ -34,7 +34,7 @@ var db = mongoose.connection;
 
 db.on('error', console.error);
 
-var mongodbURI = process.env.ENV_MONGO_URI || 'mongodb://localhost:27017/test';
+var mongodbURI = process.env.NODE_ENV === 'test' ? 'mongodb://localhost:27017/mocha-test' : process.env.ENV_MONGO_URI;
 
 mongoose.connect(mongodbURI);
 console.log("Database connection ready.");
@@ -43,7 +43,7 @@ var server = app.listen(process.env.ENV_PORT || 8888, function() {
   var port = server.address().port;
   console.log("Server now running on port: ", port);
 });
-
+module.exports = server;
 
 // Contacts API Routes
 

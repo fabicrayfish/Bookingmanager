@@ -7,7 +7,8 @@ var schedule = require('node-schedule');
 var Festival = require('../models/festival-model.js');
 var Emails = require('../models/email-model.js');
 var EmailLog = require('../models/email-log-model.js');
-var emailSender = require('./emailSender.js')
+var emailSender = require('./emailSender.js');
+var dueFestivals = require('./dueFestivals.js');
 
 var emailCount;
 var logOfSentEmails;
@@ -28,6 +29,26 @@ var EmailCronJob = function(){
     console.log("cronjob scheduled, timer set ist: ", cronjobTimer);
     console.log("system time: ", moment().format());
   };
+
+  _test = function (done) {
+    dueFestivals.getFestivals(function(emailFestivals, manualFestivals){
+      var count = emailFestivals.length;
+      var festivalEmails = [];
+      emailFestivals.forEach(function(festival){
+
+        getEmailTemplateForDate(festival[0]["dates"][festival[1]], function(emailTemplate){
+          count -= 1;
+          festivalEmails.push([festival, emailTemplate]);
+
+          if (count === 0 ) {
+            done(festivalEmails);
+          }
+        });
+      });
+    });
+  };
+
+
 
   _sendEmailsToFestivals = function () {
     console.log("cronjob runs at ", moment().format());
@@ -125,6 +146,7 @@ var EmailCronJob = function(){
 
   getEmailTemplateForDate = function (date, callback) {
     var festivalDeadLine = moment(date.deadline);
+
     Emails.findOne({"date.startDate": {$lt: festivalDeadLine}, "date.endDate": {$gte: festivalDeadLine} }, {}, { sort: { 'date.endDate' : -1 } }, function(err, emailTemplate){
       callback(emailTemplate);
     });
@@ -185,7 +207,8 @@ var EmailCronJob = function(){
     checkIfAllEmailsSent    : _checkIfAllEmailsSent,
     start                   : _start,
     sendEmailsToFestivals   : _sendEmailsToFestivals,
-    logOfSentEmails         : logOfSentEmails
+    logOfSentEmails         : logOfSentEmails,
+    test                    : _test
   }
 }();
 

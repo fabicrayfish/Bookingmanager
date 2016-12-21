@@ -2,14 +2,15 @@ process.env.DAYS_UNTIL_DEADLINE = 42;
 
 var chai = require("chai");
 var should = chai.should();
-var emailReport = require("../app/functions/festivalBooking.js");
 var chaiHttp = require('chai-http');
 var utils = require('./utils');
 var moment = require('moment');
 var server = require('../server');
+var emailReport = require("../app/functions/festivalBooking.js");
 var festivalTestdata = require('./data/festivals-testdata');
 var emailTemplateTestdata = require('./data/emailtemplate-testdata');
 var dueFestivals = require('../app/functions/dueFestivals');
+var festivalEmailSender = require('../app/functions/festivalEmailSender');
 
 chai.use(chaiHttp);
 
@@ -46,10 +47,10 @@ describe("Festivals", function() {
           });
     });
   });
-  describe("GET due Festivals", function() {
+  describe("/GET due Festivals", function() {
     it("it should return the manual and email Festivals", function(done) {
       dueFestivals.getFestivals(function(emailFestivals, manualFestivals){
-        emailFestivals.length.should.eql(2);
+        emailFestivals.length.should.eql(3);
         manualFestivals.length.should.eql(1);
         done();
       });
@@ -93,12 +94,44 @@ describe("Email Templates", function() {
 });
 
 describe("Email Report Sender", function() {
-  it("should test a thing", function(done) {
-    emailReport.test(function(festivalEmails){
-      festivalEmails.length.should.eql(2);
+  it("should send an Email for a Festival", function(done){
+    var festival = festivalTestdata[0];
+    var emailTemplate = emailTemplateTestdata[0];
+
+    festivalEmailSender.sendAndLog(emailTemplate, festival, function(status, log){
+      log.recipient.should.eql(festival.email);
+      status.should.eql(true);
       done();
     });
   });
+
+  it("should NOT send an Email for a Festival", function(done){
+    var festival = festivalTestdata[2];
+    var emailTemplate = emailTemplateTestdata[0];
+
+    festivalEmailSender.sendAndLog(emailTemplate, festival, function(status, log){
+      should.not.exist(log);
+      status.should.eql(false);
+      done();
+    });
+  });
+
+  describe("Send all Email Festivals", function() {
+    it("should have sent succesfully Emails", function(done) {
+      emailReport.test(function(successLog, errorFestivals){
+        successLog.length.should.eql(2);
+        done();
+      });
+    });
+
+    it("should have not sent certain Emails for festivals", function(done) {
+      emailReport.test(function(successLog, errorFestivals){
+        errorFestivals.length.should.eql(1);
+        done();
+      });
+    });
+  });
+
   /*describe("Email Reporting starts", function() {
     it("starts the email reporting", function() {
       var sendAllEmails = emailReport.sendEmailsToFestivals();

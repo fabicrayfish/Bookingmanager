@@ -5,7 +5,14 @@
   "main": "server.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec",
-    "start": "node server.js"
+    "start": "node server.js",
+    "inspect": "NODE_ENV=test ./node_modules/.bin/mocha -s 0 --inspect --debug-brk",
+    "coverage-report": "./node_modules/.bin/istanbul-coverage-report",
+    "coverage": "npm run coverage-report && open ./coverage/lcov-report/index.html",
+    "coverage-badge": "./node_modules/.bin/istanbul-cobertura-badger -e 95 -g 85 -b \"${PWD##*/}\"",
+    "lint": "./node_modules/.bin/eslint .",
+    "validate": "./node_modules/.bin/module-validator",
+    "depcheck": "./node_modules/.bin/dependency-checker"
   },
   "dependencies": {
     "body-parser": "^1.13.3",
@@ -21,6 +28,16 @@
     "mongoose": "^4.5.7",
     "node-schedule": "^1.1.1",
     "nodemailer": "^2.5.0",
-    "request": "^2.78.0"
+    "request": "^2.78.0",
+    "validator": "^6.2.0"
+  },
+  "pre-commit": [
+    "lint",
+    "validate",
+    "depcheck"
+  ],
+  "pre-push": [],
+  "devDependencies": {
+    "nodemailer-mock": "^1.1.9"
   }
 }

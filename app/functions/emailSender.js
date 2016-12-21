@@ -1,25 +1,26 @@
-var nodemailer = require("nodemailer");
-var transporter = nodemailer.createTransport('smtps://admin%40alaskapirate.de:crayfish2013@smtp.strato.de');
+var nodemailer = process.env.NODE_ENV === 'test' ? require('nodemailer-mock') : require("nodemailer");
+var transportAddress = process.env.NODE_ENV === 'test' ? '' : 'smtps://admin%40alaskapirate.de:crayfish2013@smtp.strato.de';
+var transporter = nodemailer.createTransport(transportAddress);
 
 var EmailSender = function(){
-  _sendEmailAsHTML = function (sender, recipient, subject, body, callback) {
+  _sendEmailAsHTML = function (email, callback) {
     var mailOptions = {
-        from: sender, // sender address
-        to: recipient, // list of receivers
-        subject: subject, // Subject line
-        html: body // plaintext body
+        from: email.sender, // sender address
+        to: email.recipient, // list of receivers
+        subject: email.subject, // Subject line
+        html: email.body // plaintext body
     };
 
     sendEmail(mailOptions, callback);
   }
 
-  _sendEmailAsText = function (sender, recipient, bcc, subject, body, callback) {
+  _sendEmailAsText = function (email, callback) {
     var mailOptions = {
-        from: sender, // sender address
-        to: recipient, // list of receivers
-        bcc: bcc,
-        subject: subject, // Subject line
-        text: body // plaintext body
+        from: email.sender, // sender address
+        to: email.recipient, // list of receivers
+        bcc: email.bcc,
+        subject: email.subject, // Subject line
+        text: email.body // plaintext body
     };
 
     sendEmail(mailOptions, callback);

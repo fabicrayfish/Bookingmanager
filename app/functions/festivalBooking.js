@@ -17,10 +17,7 @@ var logOfManualFestivals;
 var cronJob;
 
 
-var EmailCronJob = function(){
-  emailCount = 0;
-  logOfSentEmails = [];
-  logOfManualFestivals = [];
+var EmailReport = function(){
 
   _start = function () {
     var cronjobTimer = process.env.CRON_TIMER || '20 * * * * *';
@@ -31,44 +28,62 @@ var EmailCronJob = function(){
     console.log("system time: ", moment().format());
   };
 
-  _test = function (done) {
+  _sendReportEmail = function(callback) {
+    var email = {
+      "sender": '"Stereo Satellite Booking" <booking@stereo-satellite.de>',
+      "recipient": process.env.MAIL_REPORT_RECIPIENT || 'fabi.fink@gmail.com',
+      "subject": 'AP Booking Manager - Reporting of ' + moment().format("DD-MM-YYYY")
+    };
+
+    _checkAndSendFestivals(function(sentFestivalsLog, errorFestivals, manualFestivals){
+      email.body = createBody(sentFestivalsLog, errorFestivals, manualFestivals);
+
+      emailSender.sendEmailAsHTML(email, function(err, info){
+        callback(true);
+      });
+    });
+  }
+
+  _checkAndSendFestivals = function (callback) {
     dueFestivals.getFestivals(function(emailFestivals, manualFestivals){
-      festivalEmailSender.sendFestivalEmails(emailFestivals, function(success, error){
-        done(success, error);
+      festivalEmailSender.sendFestivalEmails(emailFestivals, function(sentFestivalLog, errorFestivals){
+        callback(sentFestivalLog, errorFestivals, manualFestivals);
       })
     });
   };
 
-
-  sendReportEmail = function() {
+  createBody = function(sentFestivalsLog, errorFestivals, manualFestivals) {
     var envURL = process.env.ENV_URL || 'http://localhost:8888'
 
-    var sender = '"Stereo Satellite Booking" <booking@stereo-satellite.de>';
-    var recipient = process.env.MAIL_REPORT_RECIPIENT || 'fabi.fink@gmail.com';
-    var subject = 'AP Booking Manager - Reporting of ' + moment().format("DD-MM-YYYY");
     var body = '<p>Hi, </p><p>Report für den ' +  moment().format("DD-MM-YYYY") + '</p>';
-    if (logOfSentEmails.length > 0) {
+    if (sentFestivalsLog.length > 0) {
       body = body.concat('<p><b>Versendete Emails</b></p>');
-      logOfSentEmails.forEach(function(emailLog){
+      sentFestivalsLog.forEach(function(emailLog){
         body = body.concat('<a href="' + envURL + '/#/festival/' + emailLog.festival + '">' + emailLog.festivalName + '</a> (<a href="' + envURL + '/#/emaillog/' + emailLog.id + '"> Email </a>)</br>');
       });
     }
-
-    if (logOfManualFestivals.length > 0) {
+    if (manualFestivals.length > 0) {
       body = body.concat('<p><b>Offene Festivals</b></p>');
-      logOfManualFestivals.forEach(function(festival){
+      manualFestivals.forEach(function(festival){
         body = body.concat('<a href="' + envURL + '/#/festival/' + festival._id + '">' + festival.festivalName + '</a></br>');
       });
     }
 
-    console.log("Send report Email to:", recipient);
-    emailSender.sendEmailAsHTML(sender, recipient, subject, body, function(err, info){});
+    if (errorFestivals.length > 0) {
+      body = body.concat('<p><b>Fehlerhafte Festivals</b></p>');
+      errorFestivals.forEach(function(festival){
+        body = body.concat('<a href="' + envURL + '/#/festival/' + festival._id + '">' + festival.festivalName + '</a></br>');
+      });
+    }
+
+    return body;
   }
 
   return {
     start                   : _start,
-    test                    : _test
+    checkAndSendFestivals   : _checkAndSendFestivals,
+    sendReportEmail         : _sendReportEmail
   }
 }();
 
-module.exports = EmailCronJob;
+module.exports = EmailReport;

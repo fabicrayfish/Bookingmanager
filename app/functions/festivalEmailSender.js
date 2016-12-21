@@ -40,7 +40,7 @@ var FestivalEmailSender = function(){
           if (status) {
             success.push(log);
           } else {
-            error.push(festivalWithEmail[0]);
+            error.push(festivalWithEmail[0][0]);
           }
 
           if(count === 0) {

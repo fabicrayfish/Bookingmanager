@@ -117,16 +117,31 @@ describe("Email Report Sender", function() {
   });
 
   describe("Send all Email Festivals", function() {
-    it("should have sent succesfully Emails", function(done) {
-      emailReport.test(function(successLog, errorFestivals){
+    it("should sent Emails for festivals succesfully", function(done) {
+      emailReport.checkAndSendFestivals(function(successLog, errorFestivals){
         successLog.length.should.eql(2);
         done();
       });
     });
 
-    it("should have not sent certain Emails for festivals", function(done) {
-      emailReport.test(function(successLog, errorFestivals){
+    it("should not sent Emails for festivals succesfully", function(done) {
+      emailReport.checkAndSendFestivals(function(successLog, errorFestivals){
         errorFestivals.length.should.eql(1);
+        done();
+      });
+    });
+    it("should forward manual Festivals", function(done) {
+      emailReport.checkAndSendFestivals(function(successLog, errorFestivals, manualFestivals){
+        manualFestivals.length.should.eql(1);
+        done();
+      });
+    });
+  });
+
+  describe("Send all Email Festivals", function() {
+    it("should sent Emails for festivals succesfully", function(done) {
+      emailReport.sendReportEmail(function(status){
+        status.should.eql(true);
         done();
       });
     });

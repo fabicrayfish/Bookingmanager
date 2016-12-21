@@ -17,7 +17,7 @@ var DueFestivals = function(){
           if (shouldEmailBeSent(date, festival, notbefore, notafter)) {
             emailFestivals.push([festival, key]);
           } else if (shouldFestivalBeContactedManually(date, festival)) {
-            manualFestivals.push([festival, key]);
+            manualFestivals.push(festival);
           }
         });
       });

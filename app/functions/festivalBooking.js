@@ -20,7 +20,7 @@ var cronJob;
 var EmailReport = function(){
 
   _start = function () {
-    var cronjobTimer = process.env.CRON_TIMER || '20 * * * * *';
+    var cronjobTimer = process.env.CRON_TIMER || '* 30 * * * *';
     cronJob = schedule.scheduleJob(cronjobTimer, function(){
       _sendEmailsToFestivals();
     });

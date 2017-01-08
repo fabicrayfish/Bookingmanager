@@ -24,6 +24,23 @@ angular.module('list', ['ngRoute'])
     $scope.reverse = !$scope.reverse; //if true make it false and vice versa
   }
 
+  $scope.getSortValue = function(festival){
+    var sortKeyEdited = $scope.sortKey;
+
+    if($scope.sortKey) {
+      sortKeyEdited = sortKeyEdited.replace("%lastDate%", festival.dates.length - 1);
+      return getDescendantProp(festival, sortKeyEdited);
+    }
+
+    return undefined;
+  }
+
+  function getDescendantProp(obj, desc) {
+    var arr = desc.split(".");
+    while(arr.length && (obj = obj[arr.shift()]));
+    return obj;
+  }
+
   $scope.nextPage = function() {
     console.log("nextPage");
     $scope.currentPage = $scope.currentPage + 1;

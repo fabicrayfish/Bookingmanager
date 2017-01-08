@@ -36,7 +36,9 @@ db.on('error', console.error);
 
 console.log("ENV: " + process.env.NODE_ENV);
 
-var mongodbURI = process.env.NODE_ENV === 'test' ? 'mongodb://localhost:27017/mocha-test' : process.env.ENV_MONGO_URI;
+//var mongodbURI = process.env.NODE_ENV === 'test' ? 'mongodb://localhost:27017/mocha-test' : process.env.ENV_MONGO_URI;
+var mongodbURI = process.env.NODE_ENV === 'test' ? 'mongodb://localhost:27017/mocha-test' : 'mongodb://localhost:27017/test';
+
 
 mongoose.connect(mongodbURI);
 console.log("Database connection ready.");

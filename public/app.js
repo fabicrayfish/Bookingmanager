@@ -24,6 +24,21 @@ app.factory('authenticationInterceptor', function($q, $location, $localStorage){
   }
 });
 
+app.filter('orderObjectBy', function() {
+  return function(items, field, reverse) {
+    var filtered = [];
+    angular.forEach(items, function(item) {
+      filtered.push(item);
+    });
+    filtered.sort(function (a, b) {
+      return (field(a) > field(b) ? 1 : -1);
+    });
+    if(reverse) filtered.reverse();
+    return filtered;
+  };
+});
+
+
 app.factory('AlertService', function () {
   var success = {},
       error = {},
@@ -53,6 +68,7 @@ app.factory('AlertService', function () {
     }
   }
 });
+
 
 angular.module('BookingManager.services', [])
   .factory('festivalEntry', function($resource) {

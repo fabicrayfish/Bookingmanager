@@ -17,18 +17,18 @@ var logOfManualFestivals;
 var cronJob;
 
 
-var EmailReport = function(){
+var FestivalReport = function(){
 
-  _start = function () {
+  _startCron = function () {
     var cronjobTimer = process.env.CRON_TIMER || '* 30 * * * *';
     cronJob = schedule.scheduleJob(cronjobTimer, function(){
-      _sendEmailsToFestivals();
+      _triggerFestivalReport();
     });
     console.log("cronjob scheduled, timer set ist: ", cronjobTimer);
     console.log("system time: ", moment().format());
   };
 
-  _sendReportEmail = function(callback) {
+  _triggerFestivalReport = function(callback) {
     var email = {
       "sender": '"Stereo Satellite Booking" <booking@stereo-satellite.de>',
       "recipient": process.env.MAIL_REPORT_RECIPIENT || 'fabi.fink@gmail.com',
@@ -36,12 +36,24 @@ var EmailReport = function(){
     };
 
     _checkAndSendFestivals(function(sentFestivalsLog, errorFestivals, manualFestivals){
-      email.body = createBody(sentFestivalsLog, errorFestivals, manualFestivals);
+      if (shouldReportBeSend(sentFestivalsLog, errorFestivals, manualFestivals)) {
+        email.body = createBody(sentFestivalsLog, errorFestivals, manualFestivals);
 
-      emailSender.sendEmailAsHTML(email, function(err, info){
-        callback(true);
-      });
+        emailSender.sendEmailAsHTML(email, function(err, info){
+          callback(true);
+        });
+      } else {
+        callback(false);
+      }
     });
+  }
+
+  shouldReportBeSend = function(sent, error, manual) {
+    if (sent.length > 0 || error.length > 0 || manual.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   _checkAndSendFestivals = function (callback) {
@@ -80,10 +92,10 @@ var EmailReport = function(){
   }
 
   return {
-    start                   : _start,
+    startCron               : _startCron,
     checkAndSendFestivals   : _checkAndSendFestivals,
-    sendReportEmail         : _sendReportEmail
+    triggerFestivalReport   : _triggerFestivalReport
   }
 }();
 
-module.exports = EmailReport;
+module.exports = FestivalReport;

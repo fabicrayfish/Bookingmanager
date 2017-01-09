@@ -4,6 +4,7 @@ var chai = require("chai");
 var should = chai.should();
 var chaiHttp = require('chai-http');
 var utils = require('./utils');
+var db = require('./dbsetup.js');
 var moment = require('moment');
 var server = require('../server');
 var emailReport = require("../app/functions/festivalBooking.js");
@@ -14,26 +15,29 @@ var festivalEmailSender = require('../app/functions/festivalEmailSender');
 
 chai.use(chaiHttp);
 
+function postFestivalsTestData(done){
+  var count = festivalTestdata.length;
+
+  festivalTestdata.forEach(function(festival) {
+    chai.request(server)
+        .post('/api/festivals')
+        .set('x-access-token', utils.token)
+        .send(festival)
+        .end((err, res) => {
+          count -= 1;
+          res.should.have.status(200);
+          res.body.should.have.property('festivalName');
+          if (count === 0) {
+            done();
+          }
+        });
+  });
+}
+
 describe("Festivals", function() {
   describe("/POST festival", function() {
     it("it should post a festival", function(done) {
-      var count = festivalTestdata.length;
-
-      festivalTestdata.forEach(function(festival) {
-        chai.request(server)
-            .post('/api/festivals')
-            .set('x-access-token', utils.token)
-            .send(festival)
-            .end((err, res) => {
-              count -= 1;
-              res.should.have.status(200);
-              res.body.should.have.property('festivalName');
-              if (count === 0) {
-                done();
-              }
-            });
-      });
-
+      postFestivalsTestData(done);
     });
   });
   describe("/GET Festivals", function() {
@@ -58,26 +62,29 @@ describe("Festivals", function() {
   })
 });
 
+function postEmailTemplatesTestData(done){
+  var count = emailTemplateTestdata.length;
+
+  emailTemplateTestdata.forEach(function(emailTemplate) {
+    chai.request(server)
+        .post('/api/emails')
+        .set('x-access-token', utils.token)
+        .send(emailTemplate)
+        .end((err, res) => {
+          count -= 1;
+          res.should.have.status(200);
+          res.body.should.have.property('subject');
+          if (count === 0) {
+            done();
+          }
+        });
+  });
+}
+
 describe("Email Templates", function() {
   describe("/POST Email Template", function() {
-    it("it should post a festival", function(done) {
-      var count = emailTemplateTestdata.length;
-
-      emailTemplateTestdata.forEach(function(emailTemplate) {
-        chai.request(server)
-            .post('/api/emails')
-            .set('x-access-token', utils.token)
-            .send(emailTemplate)
-            .end((err, res) => {
-              count -= 1;
-              res.should.have.status(200);
-              res.body.should.have.property('subject');
-              if (count === 0) {
-                done();
-              }
-            });
-      });
-
+    it("it should post all Email Templates", function(done) {
+      postEmailTemplatesTestData(done);
     });
   });
   describe("/GET Email Templates", function() {
@@ -139,10 +146,28 @@ describe("Email Report Sender", function() {
   });
 
   describe("Send all Email Festivals", function() {
-    it("should sent Emails for festivals succesfully", function(done) {
-      emailReport.sendReportEmail(function(status){
-        status.should.eql(true);
+    before(function(done){
+      db.clearDB(function(){
+        postFestivalsTestData(function(){
+          postEmailTemplatesTestData(done);
+        });
+      });
+    });
+
+    it("should return due email Festivals", function(done){
+      dueFestivals.getFestivals(function(emailFestivals, manualFestivals){
+        emailFestivals.length.should.eql(3);
         done();
+      });
+    });
+
+    it("should sent Emails for festivals succesfully", function(done) {
+      emailReport.triggerFestivalReport(function(status){
+        status.should.eql(true);
+        dueFestivals.getFestivals(function(emailFestivals, manualFestivals){
+          emailFestivals.length.should.eql(1);
+          done();
+        });
       });
     });
   });

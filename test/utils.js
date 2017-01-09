@@ -6,29 +6,12 @@ var chai = require("chai");
 var should = chai.should();
 var server = require('../server');
 var User = require('../app/models/user.js');
-
-
+var db = require('./dbsetup.js');
 // Tests
 
 
 before(function(done){
-  function clearDB() {
-    for (var i in mongoose.connection.collections) {
-      mongoose.connection.collections[i].remove(function() {});
-    }
-    return done();
-  }
-
-  if (mongoose.connection.readyState === 0) {
-    mongoose.connect(config.db.test, function (err) {
-      if (err) {
-        throw err;
-      }
-      return clearDB();
-    });
-  } else {
-    return clearDB();
-  }
+  db.clearDB(done);
 });
 
 before(function(){
@@ -66,5 +49,3 @@ before(function(){
           });
     })
 });
-
-

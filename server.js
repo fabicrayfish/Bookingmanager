@@ -93,7 +93,7 @@ app.post('/api/authenticate', function(req, res){
 });
 
 var cronJob = require("./app/functions/festivalBooking.js");
-cronJob.start();
+cronJob.startCron();
 // Router to verify user identity
 
 function checkToken(req, res, next){

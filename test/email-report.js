@@ -161,7 +161,7 @@ describe("Email Report Sender", function() {
       });
     });
 
-    it("should sent Emails for festivals succesfully", function(done) {
+    it("should sent Emails and Report for festivals succesfully", function(done) {
       emailReport.triggerFestivalReport(function(status){
         status.should.eql(true);
         dueFestivals.getFestivals(function(emailFestivals, manualFestivals){
@@ -170,7 +170,18 @@ describe("Email Report Sender", function() {
         });
       });
     });
+
+    it("should sent a Report Email for manualFestivals Only for festivals succesfully", function(done) {
+      emailReport.triggerFestivalReport(function(status){
+        status.should.eql(true);
+        dueFestivals.getFestivals(function(emailFestivals, manualFestivals){
+          manualFestivals.length.should.eql(1);
+          done();
+        });
+      });
+    });
   });
+
 
   /*describe("Email Reporting starts", function() {
     it("starts the email reporting", function() {

@@ -22,13 +22,20 @@ var FestivalReport = function(){
   _startCron = function () {
     var cronjobTimer = process.env.CRON_TIMER || '* 30 * * * *';
     cronJob = schedule.scheduleJob(cronjobTimer, function(){
-      _triggerFestivalReport();
+      _triggerFestivalReport(function(status){
+        if(status) {
+          console.log("Festival Report succesfully sent.");
+        } else {
+          console.log("Festival Report was unsuccesfull. Report Email could not be sent.");
+        }
+      });
     });
     console.log("cronjob scheduled, timer set ist: ", cronjobTimer);
     console.log("system time: ", moment().format());
   };
 
   _triggerFestivalReport = function(callback) {
+    console.log("Festival report got triggered on: ", moment().format());
     var email = {
       "sender": '"Stereo Satellite Booking" <booking@stereo-satellite.de>',
       "recipient": process.env.MAIL_REPORT_RECIPIENT || 'fabi.fink@gmail.com',
@@ -38,6 +45,10 @@ var FestivalReport = function(){
     _checkAndSendFestivals(function(sentFestivalsLog, errorFestivals, manualFestivals){
       if (shouldReportBeSend(sentFestivalsLog, errorFestivals, manualFestivals)) {
         email.body = createBody(sentFestivalsLog, errorFestivals, manualFestivals);
+        console.log("FESTIVALS PROCESSED");
+        console.log("Count of Email Festivals: ", sentFestivalsLog.length);
+        console.log("Count of Manual Festivals: ", manualFestivals.length);
+        console.log("Count of Festivals with Error: ", errorFestivals.length);
 
         emailSender.sendEmailAsHTML(email, function(err, info){
           callback(true);

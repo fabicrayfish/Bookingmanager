@@ -70,7 +70,7 @@ module.exports = [{
     }
   ],
   "festivalName" : "Rock am Ring",
-  "email" : "fabi.fink@gmail.com"
+  "email" : ""
 },
 {
   "name" : "Florian",

@@ -9,16 +9,22 @@ var moment = require('moment');
 var server = require('../server');
 var emailReport = require("../app/functions/festivalBooking.js");
 var festivalTestdata = require('./data/festivals-testdata');
+var festivalTestdataWithError = require('./data/festivals-testdata-with-error');
 var emailTemplateTestdata = require('./data/emailtemplate-testdata');
 var dueFestivals = require('../app/functions/dueFestivals');
 var festivalEmailSender = require('../app/functions/festivalEmailSender');
 
 chai.use(chaiHttp);
 
-function postFestivalsTestData(done){
-  var count = festivalTestdata.length;
+function postFestivalsTestData(withError, done){
+  if (withError) {
+    var testdata = festivalTestdataWithError
+  } else {
+    var testdata = festivalTestdata
+  }
+  var count = testdata.length;
 
-  festivalTestdata.forEach(function(festival) {
+  testdata.forEach(function(festival) {
     chai.request(server)
         .post('/api/festivals')
         .set('x-access-token', utils.token)
@@ -37,7 +43,7 @@ function postFestivalsTestData(done){
 describe("Festivals", function() {
   describe("/POST festival", function() {
     it("it should post a festival", function(done) {
-      postFestivalsTestData(done);
+      postFestivalsTestData(true, done);
     });
   });
   describe("/GET Festivals", function() {
@@ -113,7 +119,7 @@ describe("Email Report Sender", function() {
   });
 
   it("should NOT send an Email for a Festival", function(done){
-    var festival = festivalTestdata[2];
+    var festival = festivalTestdataWithError[2];
     var emailTemplate = emailTemplateTestdata[0];
 
     festivalEmailSender.sendAndLog(emailTemplate, festival, function(status, log){
@@ -148,7 +154,7 @@ describe("Email Report Sender", function() {
   describe("Send all Email Festivals", function() {
     before(function(done){
       db.clearDB(function(){
-        postFestivalsTestData(function(){
+        postFestivalsTestData(false, function(){
           postEmailTemplatesTestData(done);
         });
       });
@@ -165,7 +171,7 @@ describe("Email Report Sender", function() {
       emailReport.triggerFestivalReport(function(status){
         status.should.eql(true);
         dueFestivals.getFestivals(function(emailFestivals, manualFestivals){
-          emailFestivals.length.should.eql(1);
+          emailFestivals.length.should.eql(0);
           done();
         });
       });

@@ -55,9 +55,6 @@ var FestivalReport = function(){
         });
       } else {
         console.log("No Festivals to Process");
-        console.log("Count of Email Festivals: ", sentFestivalsLog.length);
-        console.log("Count of Manual Festivals: ", manualFestivals.length);
-        console.log("Count of Festivals with Error: ", errorFestivals.length);
         callback(false);
       }
     });

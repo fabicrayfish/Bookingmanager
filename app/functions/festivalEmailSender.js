@@ -29,26 +29,29 @@ var FestivalEmailSender = function(){
   _sendFestivalEmails = function(festivalsWithDateID, callback) {
     var success = [];
     var error = [];
+    if (festivalsWithDateID.length > 0) {
+      getFestivalsWithEmailTemplates(festivalsWithDateID, function(festivalsWithEmail){
+        var count = festivalsWithEmail.length;
 
-    getFestivalsWithEmailTemplates(festivalsWithDateID, function(festivalsWithEmail){
-      var count = festivalsWithEmail.length;
+        festivalsWithEmail.forEach(function(festivalWithEmail){
+          sendLogAndUpdate(festivalWithEmail[1], festivalWithEmail[0][0], festivalWithEmail[0][1], function(status, log) {
+            count -= 1;
 
-      festivalsWithEmail.forEach(function(festivalWithEmail){
-        sendLogAndUpdate(festivalWithEmail[1], festivalWithEmail[0][0], festivalWithEmail[0][1], function(status, log) {
-          count -= 1;
+            if (status) {
+              success.push(log);
+            } else {
+              error.push(festivalWithEmail[0][0]);
+            }
 
-          if (status) {
-            success.push(log);
-          } else {
-            error.push(festivalWithEmail[0][0]);
-          }
-
-          if(count === 0) {
-            callback(success, error);
-          }
+            if(count === 0) {
+              callback(success, error);
+            }
+          });
         });
       });
-    });
+    } else {
+      callback(success, error);
+    }
   }
 
   getFestivalsWithEmailTemplates = function (festivalsWithDateID, callback) {

@@ -6,7 +6,6 @@ mongo:
     - "27017:27017"
 web:
   build: .
-  command: "npm start"
   environment:
     - ENV_URL=http://localhost
     - ENV_PORT=80

@@ -1,2 +1,4 @@
-git rm -r -f data
-git rm -r -f awscli-bundle
+node_modules/
+data/
+docker-compose-production.yml
+.codekit-cache/

@@ -38,7 +38,7 @@ console.log("ENV: " + process.env.NODE_ENV);
 
 var mongodbURI = process.env.ENV_MONGO_URI;
 
-mongoose.connect(mongodbURI);
+mongoose.connect(mongodbURI, {useMongoClient: true});
 console.log("Database connection ready.");
 
 var server = app.listen(process.env.ENV_PORT || 8888, function() {

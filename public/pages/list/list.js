@@ -7,7 +7,7 @@ angular.module('list', ['ngRoute'])
     });
 })
 
-.controller('FestivalListCtrl', function($scope, festivalEntry, AlertService, $timeout){
+.controller('FestivalListCtrl', function($scope, $rootScope, festivalEntry, AlertService, $timeout){
 
   if (AlertService.hasAlert()) {
     $scope.alertMessage = AlertService.getSuccess();
@@ -16,12 +16,16 @@ angular.module('list', ['ngRoute'])
   }
 
   $scope.festivals = festivalEntry.query();
-  $scope.currentPage = 1; // keeps track of the current page
+  $scope.currentPage = $rootScope.festivals.currentPage; // keeps track of the current page
+  $scope.sortKey = $rootScope.festivals.sortKey;
+  $scope.reverse = $rootScope.festivals.reverse;
   $scope.pageSize = 5; // holds the number of items per page
 
   $scope.sort = function(keyname){
-    $scope.sortKey = keyname;   //set the sortKey to the param passed
-    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+    $rootScope.festivals.sortKey = keyname;   //set the sortKey to the param passed
+    $scope.sortKey = keyname;
+    $rootScope.festivals.reverse = !$rootScope.festivals.reverse; //if true make it false and vice versa
+    $scope.reverse = !$scope.reverse;
   }
 
   $scope.getSortValue = function(festival){
@@ -41,10 +45,8 @@ angular.module('list', ['ngRoute'])
     return obj;
   }
 
-  $scope.nextPage = function() {
-    console.log("nextPage");
-    $scope.currentPage = $scope.currentPage + 1;
-    $scope.$apply();
+  $scope.onPageChange = function(newPageNumber, oldPageNumber) {
+    $rootScope.festivals.currentPage = newPageNumber;
   };
 
 

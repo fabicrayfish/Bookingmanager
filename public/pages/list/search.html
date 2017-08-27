@@ -33,7 +33,7 @@
         <span class="glyphicon sort-icon" ng-show="sortKey=='address.distance'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
       </th>
     </tr>
-    <tr dir-paginate="festival in festivals | orderObjectBy:getSortValue:reverse | filter: search | itemsPerPage:50" ng-click="redirect(festival)">
+    <tr dir-paginate="festival in festivals | orderObjectBy:getSortValue:reverse | filter: search | itemsPerPage:50 " current-page="currentPage" ng-click="redirect(festival)">
       <td>{{festival.festivalName}}</td>
       <td>{{festival.address.locality}}</td>
       <td>{{festival.dates[festival.dates.length - 1].deadline | date:'dd-MM-yyyy'}}</td>
@@ -46,7 +46,8 @@
   <dir-pagination-controls
      max-size="5"
      direction-links="true"
-     boundary-links="true" >
+     boundary-links="true"
+    on-page-change="onPageChange(newPageNumber, oldPageNumber)" >
   </dir-pagination-controls>
 </div>
 </div>

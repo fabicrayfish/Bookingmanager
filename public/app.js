@@ -102,6 +102,16 @@ angular.module('BookingManager.services', [])
     });
   });
 
-  app.run(function(editableOptions) {
+  app.run(function(editableOptions, $rootScope) {
+    //setup steps
+    $rootScope.festivals = {
+      "currentPage": 1,
+      "sortKey": "",
+      "reverse": false
+    }
+    //$rootScope.festivals.currentPage = 1;
+    //test
+
+
     editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
   });

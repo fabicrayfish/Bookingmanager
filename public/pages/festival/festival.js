@@ -1,4 +1,4 @@
-angular.module('festival', ['ngRoute'])
+angular.module('festival', ['ngRoute', 'angular-jwt'])
 
 .config(function($routeProvider) {
   $routeProvider
@@ -12,7 +12,7 @@ angular.module('festival', ['ngRoute'])
     });
 })
 
-.controller('FestivalCtrl', function($scope, $window, festivalEntry, $routeParams, AlertService, $uibModal){
+.controller('FestivalCtrl', function($scope, $window, festivalEntry, festivalComment, $routeParams, AlertService, $uibModal, $localStorage, jwtHelper){
     var directionsService = new google.maps.DirectionsService();
     var directionsDisplay = new google.maps.DirectionsRenderer();
     var rehearsalRoom = new google.maps.LatLng(49.994704, 8.669842);
@@ -27,6 +27,17 @@ angular.module('festival', ['ngRoute'])
         $scope.festivalEntry = new festivalEntry;
         $scope.festivalEntry.dates = [];
       }
+    }
+
+    $scope.addComment = function() {
+      var newComment = new festivalComment({
+        festivalId: $scope.festivalEntry._id,
+        comment: $scope.newComment.text
+      })
+
+      newComment.$save(function(comment) {
+        $scope.festivalEntry.comments.push(comment);
+      })
     }
 
     var setRouteIfAddressIsSet = function() {

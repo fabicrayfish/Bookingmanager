@@ -114,12 +114,45 @@
     </div>
     <div id="map_canvas"></div>
     <div class="container">
+      <div class="col-sm-12 m-y-30" ng-show="festivalEntry._id">
+        <div class="col-sm-8"><h2>Comments</h2></div>
+        <div class="col-sm-4 comments-sub-head"><h3>{{festivalEntry.comments.length}} Comments</h3></div>
+      </div>
+
+      <div class="col-sm-12" ng-show="festivalEntry._id">
+        <div dir-paginate="comment in festivalEntry.comments | orderBy: 'at' : true | itemsPerPage: 3 ">
+          <div class="panel panel-default festival-comment">
+            <div class="panel-heading"><b>{{comment.author.name}}</b> am {{comment.at | date:'dd-MM-yyyy HH:mm:ss'}}</div>
+            <div class="panel-body">{{comment.comment}}</div>
+          </div>
+        </div>
+        <div class="text-center">
+          <dir-pagination-controls
+             max-size="5"
+             direction-links="true"
+             boundary-links="true"
+            on-page-change="onPageChange(newPageNumber, oldPageNumber)" >
+          </dir-pagination-controls>
+        </div>
+        <div class="m-b-5">
+          <label for="comment">Comment:</label>
+          <textarea class="form-control" rows="5" ng-model="newComment.text"></textarea>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" ng-click="addComment()" ng-disabled="!newComment.text">Add Comment</button>
+      </div>
+
+
+
+
       <div class="col-sm-12 text-center m-y-30">
         <button type="button" class="btn btn-lg" id="cancel" ng-click="backToList()" >Cancel</button>
         <button type="button" class="btn btn-danger btn-lg" id="delete" ng-click="delete()" ng-show="festivalEntry._id" >Delete</button>
         <input type="submit" class="btn btn-primary btn-lg" id="submit" value="Save" />
       </div>
     </div>
+
+
+  </div>
   </form>
   <script type="text/ng-template" id="myModalContent.html">
     <div class="modal-header">

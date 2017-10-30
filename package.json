@@ -29,7 +29,8 @@
     "node-schedule": "^1.1.1",
     "nodemailer": "^2.5.0",
     "request": "^2.78.0",
-    "validator": "^6.2.0"
+    "validator": "^6.2.0",
+    "angular-jwt": "*"
   },
   "pre-commit": [
     "lint",

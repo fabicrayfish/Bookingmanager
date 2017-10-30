@@ -81,6 +81,9 @@ angular.module('BookingManager.services', [])
       }
     });
   })
+  .factory('festivalComment', function($resource) {
+    return $resource('./api/festivals/:id/comments', { id: '@festivalId' }, {});
+  })
     .factory('emailsEntry', function($resource) {
     return $resource('./api/emails/:id', { id: '@_id' }, {
       update: {

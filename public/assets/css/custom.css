@@ -8,6 +8,9 @@ div#map_canvas {
 .m-y-30 {
   margin: 30px 0 30px 0; }
 
+.m-b-5 {
+  margin: 0 0 5px 0; }
+
 .m-b-20 {
   margin: 0 0 20px 0; }
 
@@ -19,6 +22,10 @@ div#map_canvas {
 
 .m-l-8 {
   margin: 0 0 0 8px; }
+
+.m-lr-0 {
+  margin-left: 0px;
+  margin-right: 0px; }
 
 .navbar-black {
   height: 60px;
@@ -55,3 +62,9 @@ div#map_canvas {
     border-bottom: 1px solid grey; }
   .email-template .body {
     padding: 10px 0 0 0; }
+
+.comments-sub-head {
+  text-align: right;
+  color: gray; }
+
+/*# sourceMappingURL=custom.css.map */

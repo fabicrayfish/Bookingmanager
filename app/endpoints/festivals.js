@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var router = require('express').Router();
 
-var Festival = require('../models/festival-model.js')
+var Festival = require('../models/festival-model.js');
 
 // Contacts API Routes
 
@@ -26,7 +26,9 @@ function handleError(res, reason, message, code) {
 
   router.get('/festivals/:id', function(req, res){
     var id = req.params.id;
-    Festival.findById(id, function(err, docs){
+    Festival.findById(id).
+    populate('comments.author').
+    exec(function(err, docs){
       if (err) {
         handleError(res, err.message, "Failed to get festival.");
       } else {
@@ -103,6 +105,42 @@ function handleError(res, reason, message, code) {
         res.status(200).json(festival);
       });
     });
+  });
+
+  router.post('/festivals/:id/comments', function(req, res) {
+    var UserValidator = require("../functions/userValidator.js");
+
+    var id = req.params.id;
+    var newComment = req.body;
+    var token = req.headers['x-access-token'];
+
+
+    UserValidator.getUser(token, function(err, user) {
+      if (err) { handleError(res, err.message, err); }
+      newComment.author = user;
+      Festival.findById(id, function(err, festival){
+        if (err) { handleError(res, err.message, err); }
+
+        if (festival.comments){
+          festival.comments.push(newComment);
+        } else {
+          festival.comments = {newComment};
+        }
+
+
+
+        festival.save(function(err){
+          if (err) {
+            handleError(res, err.message, err);
+          }
+          res.status(200).json(festival.comments[festival.comments.length - 1]);
+        });
+      });
+    });
+
+
+
+
   });
 
 module.exports = router;

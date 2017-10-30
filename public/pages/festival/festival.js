@@ -37,6 +37,7 @@ angular.module('festival', ['ngRoute', 'angular-jwt'])
 
       newComment.$save(function(comment) {
         $scope.festivalEntry.comments.push(comment);
+        $scope.newComment.text = "";
       })
     }
 

@@ -12,6 +12,7 @@ web:
     - ENV_MONGO_URI=mongodb://mongo/test
     - CRON_TIMER=30 * * * * *
     - MAIL_REPORT_RECIPIENT=fabi.fink@gmail.com
+    - MAIL_TRANSPORT_ADDRESS=smtps://user:password@url
     - MAIL_BCC=fabi@alaskapirate.de
     - DAYS_UNTIL_DEADLINE=20
   links:

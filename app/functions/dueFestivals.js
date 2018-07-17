@@ -11,28 +11,31 @@ var DueFestivals = function(){
     var notbefore = moment().format();
     var notafter = moment().add(daysUntilDeadline, 'days').format();
 
-    Festival.find({ "dates.deadline" : { $gte: notbefore, $lt: notafter }}, function(err, festivals){
-      festivals.forEach(function(festival){
-        festival.dates.forEach(function(date, key){
-          if (shouldEmailBeSent(date, festival, notbefore, notafter)) {
-            emailFestivals.push([festival, key]);
-          } else if (shouldFestivalBeContactedManually(date, festival)) {
-            manualFestivals.push(festival);
-          }
-        });
-      });
+    Festival.find({ "date.deadline" : { $gte: notbefore, $lt: notafter }}, function(err, festivals){
+      festivals.filter((festival) => {
+        return isFestivalDue(festival, notbefore, notafter)
+      }).map((dueFestival) => {
+        if (dueFestival.date.contactType == "email" && typeof dueFestival.email != "undefined" ) {
+          emailFestivals.push(dueFestival);
+        } else {
+          manualFestivals.push(dueFestival);
+        }
+      })
 
       done(emailFestivals, manualFestivals);
     });
   }
-  shouldEmailBeSent = function(date, festival, notbefore, notafter) {
+
+  isFestivalDue = function(festival, notbefore, notafter) {
+    var date = festival.date;
     var isDateInRange = date.deadline >= moment(notbefore).toDate() && date.deadline <= moment(notafter).toDate();
-    return (date.status != "versendet" && date.contactType == "email" && typeof festival.email != "undefined" && isDateInRange)
+    var isSent = festival.sent.find((date) => { 
+      return moment(date).year() == moment().year() 
+    });
+
+    return (!isSent && isDateInRange)
   }
 
-  shouldFestivalBeContactedManually = function(date, festival) {
-    return (date.status != "versendet" && date.contactType != "email")
-  }
   return {
     getFestivals   : _getFestivals
   }

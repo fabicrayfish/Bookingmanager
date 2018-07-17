@@ -1,5 +1,5 @@
 var nodemailer = process.env.NODE_ENV === 'test' ? require('nodemailer-mock') : require("nodemailer");
-var transportAddress = process.env.NODE_ENV === 'test' ? '' : process.env.MAIL_TRANSPORT_ADDRESS;
+var transportAddress = process.env.NODE_ENV === 'test' ? {} : process.env.MAIL_TRANSPORT_ADDRESS;
 var transporter = nodemailer.createTransport(transportAddress);
 
 var EmailSender = function(){

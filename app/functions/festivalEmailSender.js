@@ -26,21 +26,21 @@ var FestivalEmailSender = function(){
     this.bcc = process.env.MAIL_BCC || 'fabi@alaskapirate.de';
   }
 
-  _sendFestivalEmails = function(festivalsWithDateID, callback) {
+  _sendFestivalEmails = function(festivals, callback) {
     var success = [];
     var error = [];
-    if (festivalsWithDateID.length > 0) {
-      getFestivalsWithEmailTemplates(festivalsWithDateID, function(festivalsWithEmail){
+    if (festivals.length > 0) {
+      getFestivalsWithEmailTemplates(festivals, function(festivalsWithEmail){
         var count = festivalsWithEmail.length;
 
         festivalsWithEmail.forEach(function(festivalWithEmail){
-          sendLogAndUpdate(festivalWithEmail[1], festivalWithEmail[0][0], festivalWithEmail[0][1], function(status, log) {
+          sendLogAndUpdate(festivalWithEmail[1], festivalWithEmail[0], function(status, log) {
             count -= 1;
 
             if (status) {
               success.push(log);
             } else {
-              error.push(festivalWithEmail[0][0]);
+              error.push(festivalWithEmail[0]);
             }
 
             if(count === 0) {
@@ -54,13 +54,13 @@ var FestivalEmailSender = function(){
     }
   }
 
-  getFestivalsWithEmailTemplates = function (festivalsWithDateID, callback) {
-    var count = festivalsWithDateID.length;
+  getFestivalsWithEmailTemplates = function (festivals, callback) {
+    var count = festivals.length;
     var festivalEmails = [];
-    festivalsWithDateID.forEach(function(festivalWithDateID){
-      getEmailTemplateForDate(festivalWithDateID[0]["dates"][festivalWithDateID[1]], function(emailTemplate){
+    festivals.forEach(function(festival){
+      getEmailTemplate(festival, (emailTemplate) => {
         count -= 1;
-        festivalEmails.push([festivalWithDateID, emailTemplate]);
+        festivalEmails.push([festival, emailTemplate]);
 
         if (count === 0 ) {
           callback(festivalEmails);
@@ -69,18 +69,18 @@ var FestivalEmailSender = function(){
     });
   }
 
-  getEmailTemplateForDate = function (date, callback) {
-    var festivalDeadLine = moment(date.deadline);
+  getEmailTemplate = function (festival, callback) {
+    var festivalDeadLine = moment();
 
     Emails.findOne({"date.startDate": {$lt: festivalDeadLine}, "date.endDate": {$gte: festivalDeadLine} }, {}, { sort: { 'date.endDate' : -1 } }, function(err, emailTemplate){
       callback(emailTemplate);
     });
   }
 
-  sendLogAndUpdate = function(emailTemplate, festival, dateID, callback) {
+  sendLogAndUpdate = function(emailTemplate, festival, callback) {
     _sendAndLog(emailTemplate, festival, function(status, log){
       if (status) {
-        saveFestivalStatus(festival, dateID, log, function(log) {
+        saveFestivalStatus(festival, log, function(log) {
           callback(status, log);
         });
       } else {
@@ -124,10 +124,15 @@ var FestivalEmailSender = function(){
     });
   }
 
-  saveFestivalStatus = function (festival, dateID, log, callback){
-    var date = festival['dates'][dateID]
-    date.status = "versendet";
-    date.emailLogID = log.id;
+  saveFestivalStatus = function (festival, log, callback){
+    festival.sent = [
+      ...festival.sent,
+      {
+        date: moment(),
+        emailLogId: log.id
+      }
+    ]
+    log.emailLogId =  log.id;
     log.festivalName = festival.festivalName;
     festival.save(function(err, f){
       callback(log);

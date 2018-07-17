@@ -19,14 +19,15 @@ module.exports = mongoose.model('Festival', new Schema({
     lat: Number,
     lng: Number
   },
-  dates: [{
+  date: {
     date: Date,
     deadline: Date,
     contactType: String,
-    status: String,
-    response: String,
+  },
+  sent: [{
+    date: Date,
     emailLogID: String
-  }],
+    }],
   comments: [{
     author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     at: { type : Date, default: Date.now },

@@ -13,14 +13,15 @@ module.exports = [{
       "route" : "",
       "street_number" : ""
   },
-  "dates" : [
+  "date" : 
     {
         "date" : moment().add(365, 'days').format(),
         "deadline" : moment().add(process.env.DAYS_UNTIL_DEADLINE - 10, 'days').format(),
         "contactType" : "email",
         "status" : "nicht versendet",
     }
-  ],
+  ,
+  "sent": [],
   "festivalName" : "Soundgarden",
   "email" : "fabi.fink@gmail.com"
 },
@@ -37,14 +38,15 @@ module.exports = [{
       "route" : "",
       "street_number" : ""
   },
-  "dates" : [
+  "date" : 
     {
         "date" : moment().add(365, 'days').format(),
         "deadline" : moment().add(process.env.DAYS_UNTIL_DEADLINE - 15, 'days').format(),
         "contactType" : "email",
         "status" : "nicht versendet",
     }
-  ],
+  ,
+  "sent": [],
   "festivalName" : "Rock am Ring",
   "email" : "fabi.fink@gmail.com"
 },
@@ -61,14 +63,15 @@ module.exports = [{
       "route" : "",
       "street_number" : ""
   },
-  "dates" : [
+  "date" : 
     {
         "date" : moment().add(365, 'days').format(),
         "deadline" : moment().add(process.env.DAYS_UNTIL_DEADLINE - 15, 'days').format(),
         "contactType" : "email",
         "status" : "nicht versendet",
     }
-  ],
+  ,
+  "sent": [],
   "festivalName" : "Rock am Ring",
   "email" : "fabi.fink@gmail.com"
 },
@@ -85,13 +88,14 @@ module.exports = [{
       "route" : "",
       "street_number" : ""
   },
-  "dates" : [
+  "date" : 
     {
         "date" : moment().add(365, 'days').format(),
         "deadline" : moment().add(process.env.DAYS_UNTIL_DEADLINE - 15, 'days').format(),
         "contactType" : "homepage",
         "status" : "nicht versendet",
     }
-  ],
+  ,
+  "sent": [],
   "festivalName" : "Hurricane Festival"
 }];

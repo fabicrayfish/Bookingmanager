@@ -12,7 +12,7 @@ var DB = function(){
 
   function _clearDB(done) {
     if (mongoose.connection.readyState === 0) {
-      mongoose.connect(config.db.test, function (err) {
+      mongoose.connect("mongodb://localhost/test", {useMongoClient: true}, function (err) {
         if (err) {
           throw err;
         }

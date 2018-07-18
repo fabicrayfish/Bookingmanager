@@ -8,8 +8,8 @@ var DueFestivals = function(){
     var emailFestivals = [];
 
 
-    var notbefore = moment().format();
-    var notafter = moment().add(daysUntilDeadline, 'days').format();
+    var notbefore = moment().year(1970).format();
+    var notafter = moment().year(1970).add(daysUntilDeadline, 'days').format();
 
     Festival.find({ "date.deadline" : { $gte: notbefore, $lt: notafter }}, function(err, festivals){
       festivals.filter((festival) => {

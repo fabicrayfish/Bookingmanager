@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 var router = require('express').Router();
 
 var Festival = require('../models/festival-model.js');
@@ -53,6 +54,8 @@ function handleError(res, reason, message, code) {
 
     var festival = new Festival(newFestival);
 
+    festival = formatFestival(festival)
+
     festival.save(function(err, festival){
       if (err) {
         handleError(res, err.message, err);
@@ -90,13 +93,13 @@ function handleError(res, reason, message, code) {
       } else {
         festival.address = {};
       }
-      if (updatedFestival.dates) {
-        festival.dates = updatedFestival.dates;
+      if (updatedFestival.date) {
+        festival.date = updatedFestival.date;
       } else {
-        festival.dates = {}
+        festival.date = {}
       }
 
-
+      festival = formatFestival(festival)
 
       festival.save(function(err){
         if (err) {
@@ -106,6 +109,13 @@ function handleError(res, reason, message, code) {
       });
     });
   });
+
+  function formatFestival(festival) {
+    festival.date.date = moment(festival.date.date).year(1970)
+    festival.date.deadline = moment(festival.date.deadline).year(1970)
+
+    return festival
+  }
 
   router.post('/festivals/:id/comments', function(req, res) {
     var UserValidator = require("../functions/userValidator.js");
@@ -122,7 +132,10 @@ function handleError(res, reason, message, code) {
         if (err) { handleError(res, err.message, err); }
 
         if (festival.comments){
-          festival.comments.push(newComment);
+          festival.comments = [
+            ...festival.comments,
+            newComment
+          ]
         } else {
           festival.comments = {newComment};
         }

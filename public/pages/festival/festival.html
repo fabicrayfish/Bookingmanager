@@ -48,29 +48,46 @@
         </div>
       </div>
       <h2>Zeitraum</h2>
+      <div class="form-group">
+        <label for="date" class="col-sm-2 control-label">Datum</label>
+        <div class="col-sm-10">
+          <md-datepicker ng-model="festivalEntry.date.date" ng-change="onDateChanged()" md-placeholder="Enter date"></md-datepicker>
+        </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="deadline" class="col-sm-2 control-label">Deadline</label>
+        <div class="col-sm-10">
+            <md-datepicker id="deadline" ng-model="festivalEntry.date.deadline" ng-change="onDateChanged()" md-placeholder="Enter date"></md-datepicker>
+        </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="contactType" class="col-sm-2 control-label">Kontaktart</label>
+        <div class="col-sm-10">
+          <select id="contactType" name="contactType" class="form-control" ng-model="festivalEntry.date.contactType" ng-options="s.text as s.text for s in contactTypes">
+            <option value="">Bitte auswählen...</option>
+        </select>
+        </div>
+      </div>
+      <div class="form-group">
+          <label for="contactType" class="col-sm-2 control-label">Template</label>
+          <div class="col-sm-10">
+              <button type="button" class="btn btn-default" ng-click="open(festivalEntry)"><i class="fa fa-envelope-o" aria-hidden="true"></i></button>
+          </div>
+        </div>
+
+        <h2>Versendete Emails</h2>
       <table class="table">
         <tr>
-          <th class="col-sm-1">Delete</th>
-          <th class="col-sm-1">Datum</th>
-          <th class="col-sm-1">Bewerbungsfrist</th>
-          <th class="col-sm-1">Kontaktart</th>
-          <th class="col-sm-1">Status</th>
-          <th class="col-sm-1">Antwort</th>
-          <th class="col-sm-1">Template</th>
+          <th class="col-sm-1">Gesendet</th>
+          <th class="col-sm-1">Email</th>
         </tr>
-          <tr ng-repeat="festivalDate in festivalEntry.dates">
-              <td><button type="button" class="btn btn-danger" ng-click="removeRow($index)"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button></td>
-             <td><a href="#" editable-date="festivalDate.date" e-single>{{ festivalDate.date || Date.now() | date:'dd-MM-yyyy'}}</a></td>
-             <td><a href="#" editable-date="festivalDate.deadline" e-single>{{ festivalDate.deadline || Date.now()   | date:'dd-MM-yyyy'}}</a></td>
-             <td><a href="#" editable-select="festivalDate.contactType" e-ng-options="s.text as s.text for s in contactTypes" e-single>{{ festivalDate.contactType || "email" }}</a></td>
-             <td><a href="#" editable-select="festivalDate.status" e-ng-options="s.text as s.text for s in statusTypes" e-single>{{ festivalDate.status || "nicht versendet" }}</a></td>
-             <td><a href="#" editable-select="festivalDate.response" e-ng-options="s.text as s.text for s in responseTypes" e-single>{{ festivalDate.response || "-" }}</a></td>
-             <td><button type="button" class="btn btn-default" ng-click="open(festivalEntry, festivalDate)"><i class="fa fa-envelope-o" aria-hidden="true"></i></button></td>
+          <tr ng-repeat="sent in festivalEntry.sent">
+             <td>{{ sent.date | date:'dd-MM-yyyy' }}</td>
+             <td><button type="button" class="btn btn-default" ng-click="openLog(sent.emailLogId)"><i class="fa fa-envelope-o" aria-hidden="true"></i></button></td>
           </tr>
       </table>
-      <div class="m-l-8">
-        <button type="button" class="btn btn-primary" ng-click="addRow()" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-      </div>
       <h2>Ort</h2>
       <div class="row">
         <div class="col-sm-8 col-sm-offset-2">

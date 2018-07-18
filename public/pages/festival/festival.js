@@ -36,7 +36,10 @@ angular.module('festival', ['ngRoute', 'angular-jwt'])
       })
 
       newComment.$save(function(comment) {
-        $scope.festivalEntry.comments.push(comment);
+        $scope.festivalEntry.comments = [
+          ...$scope.festivalEntry.comments,
+          comment
+        ];
         $scope.newComment.text = "";
       })
     }
@@ -173,17 +176,9 @@ angular.module('festival', ['ngRoute', 'angular-jwt'])
       $scope.$apply();
     }
 
-    $scope.addRow = function() {
-      $scope.festivalEntry.dates.push({"date" : Date.now(),
-            "deadline" : Date.now(),
-            "contactType" : "email",
-            "status": "nicht versendet"});
+    $scope.formatDate = function(date) {
+      return date ? moment(date).format('dd-mm-yyyy') : '';
     }
-
-    $scope.removeRow = function (idx) {
-      $scope.festivalEntry.dates.splice(idx, 1);
-    };
-
 
     $scope.backToList = function() {
         window.location = "/#/festivals"
@@ -212,7 +207,11 @@ angular.module('festival', ['ngRoute', 'angular-jwt'])
       window.location = "/#/festivals"
     }
 
-    $scope.open = function (festival, date) {
+    $scope.openLog = function(logId) {
+      window.location = "/#/emaillog/" + logId
+    }
+
+    $scope.open = function (festival) {
       console.log("open");
       var modalInstance = $uibModal.open({
         animation: true,
@@ -227,9 +226,6 @@ angular.module('festival', ['ngRoute', 'angular-jwt'])
         resolve: {
           festival: function() {
             return festival;
-          },
-          date: function() {
-            return date;
           }
         }
       });
@@ -240,18 +236,17 @@ angular.module('festival', ['ngRoute', 'angular-jwt'])
 
 // Controller of the Modal to edit or create a response.
 
-app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, emailsEntry, $filter, festival, date) {
-  var date = date;
+app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, emailsEntry, $filter, festival) {
+  var date = moment(festival.date.date).year(moment().year()).format();
   var festival = festival;
   $scope.subject = "";
   $scope.body = "";
-  console.log(date);
 
 
-  var validEmailTemplate = function(emails, date) {
+  var validEmailTemplate = function(emails, sent) {
     var possibleEmails = []
     emails.forEach(function(email){
-      if(date.deadline < email.date.endDate && date.deadline > email.date.startDate ) {
+      if(date < email.date.endDate && date > email.date.startDate ) {
         possibleEmails.push(email);
       }
     });

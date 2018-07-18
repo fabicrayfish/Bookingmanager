@@ -26,8 +26,8 @@ module.exports = mongoose.model('Festival', new Schema({
   },
   sent: [{
     date: Date,
-    emailLogID: String
-    }],
+    emailLogId: String
+  }],
   comments: [{
     author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     at: { type : Date, default: Date.now },

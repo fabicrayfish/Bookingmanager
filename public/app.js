@@ -1,8 +1,11 @@
-var app = angular.module('BookingManager', ['ngRoute', 'ngTouch', 'ngAnimate', 'ngResource', 'ngStorage', 'xeditable', 'angularUtils.directives.dirPagination', 'BookingManager.services', 'festival', 'list', 'login', 'emails', 'email', 'emaillog']);
+var app = angular.module('BookingManager', ['ngRoute', 'ngTouch', 'ngAnimate', 'ngResource', 'ngStorage', 'ngMaterial', 'ngAria', 'xeditable', 'angularUtils.directives.dirPagination', 'BookingManager.services', 'festival', 'list', 'login', 'emails', 'email', 'emaillog']);
 
-app.config(function($locationProvider, $routeProvider, $httpProvider) {
+app.config(function($locationProvider, $routeProvider, $httpProvider, $mdDateLocaleProvider) {
   $httpProvider.interceptors.push('authenticationInterceptor');
   $routeProvider.otherwise({redirectTo: '/festivals'});
+  $mdDateLocaleProvider.formatDate = function(date) {
+    return moment(date).format('DD-MM');
+ };
 });
 
 app.factory('authenticationInterceptor', function($q, $location, $localStorage){

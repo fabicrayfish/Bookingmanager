@@ -20,14 +20,11 @@
       <th class="col-sm-2" ng-click="sort('address.locality')">Stadt
         <span class="glyphicon sort-icon" ng-show="sortKey=='address.locality'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
       </th>
-      <th class="col-sm-2" ng-click="sort('dates.%lastDate%.deadline')">Bewerbungsfrist
-        <span class="glyphicon sort-icon" ng-show="sortKey=='dates.%lastDate%.deadline'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      <th class="col-sm-2" ng-click="sort('date.deadline')">Bewerbungsfrist
+        <span class="glyphicon sort-icon" ng-show="sortKey=='date.deadline'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
       </th>
-      <th class="col-sm-2" ng-click="sort('dates.%lastDate%.contactType')">Bewerbungsart
-        <span class="glyphicon sort-icon" ng-show="sortKey=='dates.%lastDate%.contactType'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-      </th>
-      <th class="col-sm-2" ng-click="sort('dates.%lastDate%.status')">Status
-        <span class="glyphicon sort-icon" ng-show="sortKey=='dates.%lastDate%.status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      <th class="col-sm-2" ng-click="sort('date.contactType')">Bewerbungsart
+        <span class="glyphicon sort-icon" ng-show="sortKey=='date.contactType'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
       </th>
       <th class="col-sm-2" ng-click="sort('address.distance')">Entfernung
         <span class="glyphicon sort-icon" ng-show="sortKey=='address.distance'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
@@ -36,9 +33,8 @@
     <tr dir-paginate="festival in festivals | orderObjectBy:getSortValue:reverse | filter: search | itemsPerPage:50 " current-page="currentPage" ng-click="redirect(festival)">
       <td>{{festival.festivalName}}</td>
       <td>{{festival.address.locality}}</td>
-      <td>{{festival.dates[festival.dates.length - 1].deadline | date:'dd-MM-yyyy'}}</td>
-      <td>{{festival.dates[festival.dates.length - 1].contactType}}</td>
-      <td>{{festival.dates[festival.dates.length - 1].status}}</td>
+      <td>{{festival.date.deadline | date:'dd-MM'}}</td>
+      <td>{{festival.date.contactType}}</td>
       <td>{{festival.address.distance}}</td>
     </tr>
   </table>

@@ -11,6 +11,56 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error" : message});
 }
 
+  router.get('/schema-adaption', (req,res) => {
+    Festival.find({}, (err, festivals) => {
+      if (err) {
+        handleError(res, err.message, "Failed to adapt schema for festivals.");
+      } else {
+        var log = {success: [], error: [], noToDo: []}
+
+        festivals.map((festival) => {
+          if (festival.dates) {
+            festival.sent = festival.dates.map((date) => {
+              return {
+                date: date.date,
+                emailLogId: date.emailLogID
+              }
+            })
+            if (festival.dates.length > 0) {
+              var lastDate = festival.dates[festival.dates.length - 1]
+              festival.date = {
+                date: lastDate.date,
+                deadline: lastDate.deadline,
+                contactType: lastDate.contactType
+              }
+
+              festival = formatFestival(festival)
+            } else {
+              festival.date = {
+                date: null,
+                deadline: null,
+                contactType: null
+              }
+            }
+
+            festival.dates = undefined
+
+            festival.save(function(err){
+              if (err) {
+                log.error.push(festival.id + "_" + festival.festivalName)
+              }
+              log.success.push(festival.id + "_" + festival.festivalName)
+            });
+          } else {
+            log.noToDo.push(festival.id + "_" + festival.festivalName)
+          }
+
+        })
+
+        res.status(200).json(log);
+      }
+    })
+  })
 
 
   router.get('/festivals', function(req, res){

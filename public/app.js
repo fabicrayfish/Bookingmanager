@@ -18,7 +18,6 @@ app.factory('authenticationInterceptor', function($q, $location, $localStorage){
       return config;
     },
     'responseError': function(response) {
-      console.log("responseError");
       if(response.status == 401 || response.status == 403) {
         window.location = "/#/login";
       }

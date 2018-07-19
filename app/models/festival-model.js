@@ -19,10 +19,17 @@ module.exports = mongoose.model('Festival', new Schema({
     lat: Number,
     lng: Number
   },
-  date: {
+  dates: [{
     date: Date,
     deadline: Date,
     contactType: String,
+    date: Date,
+    emailLogID: String
+  }],
+  date: {
+    date: Date,
+    deadline: Date,
+    contactType: String
   },
   sent: [{
     date: Date,

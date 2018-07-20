@@ -19,8 +19,12 @@ function handleError(res, reason, message, code) {
         var log = {success: [], error: [], noToDo: []}
 
         festivals.map((festival) => {
-          console.log(festival.date)
-          festival.sent = festival.dates.map((date) => {
+          festival.sent = festival.dates.filter((date) => {
+            if (date.status == "versendet" && date.contactType == "email") {
+              return true
+            }
+            return false 
+          }).map((date) => {
             return {
               date: date.date,
               emailLogId: date.emailLogID

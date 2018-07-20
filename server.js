@@ -38,7 +38,7 @@ console.log("ENV: " + process.env.NODE_ENV);
 
 var mongodbURI = process.env.ENV_MONGO_URI;
 
-mongoose.connect(mongodbURI, {useMongoClient: true, server: {auto_reconnect: true}});
+mongoose.connect(mongodbURI, {useMongoClient: true});
 console.log("Database connection ready.");
 
 db.on('error', function(error) {
@@ -49,7 +49,7 @@ db.on('error', function(error) {
 db.on('disconnected', function() {
   console.log('MongoDB disconnected!');
   setTimeout(() => {
-    mongoose.connect(mongodbURI, {server:{auto_reconnect:true}});
+    mongoose.connect(mongodbURI,  {useMongoClient: true});
   }, 3000)
 
 });

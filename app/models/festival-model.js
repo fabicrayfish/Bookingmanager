@@ -23,7 +23,7 @@ module.exports = mongoose.model('Festival', new Schema({
     date: Date,
     deadline: Date,
     contactType: String,
-    date: Date,
+    status: String,
     emailLogID: String
   }],
   date: {

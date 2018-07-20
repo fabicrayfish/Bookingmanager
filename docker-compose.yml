@@ -1,24 +1,29 @@
-mongo:
-  image: mongo
-  volumes:
-    - ./data/db:/data/db
-  ports:
-    - "27017:27017"
-web:
-  build: .
-  environment:
-    - ENV_URL=http://localhost
-    - ENV_PORT=80
-    - ENV_MONGO_URI=mongodb://mongo/test
-    - CRON_TIMER=30 * * * * *
-    - MAIL_REPORT_RECIPIENT=fabi.fink@gmail.com
-    - MAIL_TRANSPORT_ADDRESS=smtps://user:password@url
-    - MAIL_BCC=fabi@alaskapirate.de
-    - DAYS_UNTIL_DEADLINE=20
-  links:
-    - mongo
-  ports:
-    - "80:80"
-  volumes:
-    - .:/usr/src/app
-    - /usr/src/app/node_modules/
+version: '3'
+
+services:
+  mongo:
+    image: mongo
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - "27017:27017"
+  web:
+    build: .
+    depends_on:
+      - mongo
+    environment:
+      - ENV_URL=http://localhost
+      - ENV_PORT=80
+      - ENV_MONGO_URI=mongodb://mongo/test
+      - CRON_TIMER=30 * * * * *
+      - MAIL_REPORT_RECIPIENT=fabi.fink@gmail.com
+      - MAIL_TRANSPORT_ADDRESS=smtps://user:password@url
+      - MAIL_BCC=fabi@alaskapirate.de
+      - DAYS_UNTIL_DEADLINE=20
+    links:
+      - mongo
+    ports:
+      - "80:80"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules/

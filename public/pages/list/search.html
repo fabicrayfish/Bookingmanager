@@ -33,7 +33,7 @@
     <tr dir-paginate="festival in festivals | orderObjectBy:getSortValue:reverse | filter: search | itemsPerPage:50 " current-page="currentPage" ng-click="redirect(festival)">
       <td>{{festival.festivalName}}</td>
       <td>{{festival.address.locality}}</td>
-      <td>{{festival.date.deadline | date:'dd-MM'}}</td>
+      <td>{{festival.date.deadline | date:'dd MMMM'}}</td>
       <td>{{festival.date.contactType}}</td>
       <td>{{festival.address.distance}}</td>
     </tr>

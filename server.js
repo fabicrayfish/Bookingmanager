@@ -38,8 +38,21 @@ console.log("ENV: " + process.env.NODE_ENV);
 
 var mongodbURI = process.env.ENV_MONGO_URI;
 
-mongoose.connect(mongodbURI, {useMongoClient: true});
+mongoose.connect(mongodbURI, {useMongoClient: true, server: {auto_reconnect: true}});
 console.log("Database connection ready.");
+
+db.on('error', function(error) {
+  console.error('Error in MongoDb connection: ' + error);
+  mongoose.disconnect();
+});
+
+db.on('disconnected', function() {
+  console.log('MongoDB disconnected!');
+  setTimeout(() => {
+    mongoose.connect(mongodbURI, {server:{auto_reconnect:true}});
+  }, 3000)
+
+});
 
 var server = app.listen(process.env.ENV_PORT || 8888, function() {
   var port = server.address().port;

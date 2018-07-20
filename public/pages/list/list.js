@@ -42,7 +42,11 @@ angular.module('list', ['ngRoute'])
   function getDescendantProp(obj, desc) {
     var arr = desc.split(".");
     while(arr.length && (obj = obj[arr.shift()]));
-    return obj;
+    var date = moment(obj)
+    if (!date.isValid()) {
+      return obj ? obj : '';
+    }
+    return date.format('MM-DD');
   }
 
   $scope.onPageChange = function(newPageNumber, oldPageNumber) {
